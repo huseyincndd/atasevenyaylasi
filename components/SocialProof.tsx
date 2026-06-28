@@ -40,7 +40,7 @@ export const SocialProof = () => {
                   <iframe
                     src={reel.url}
                     className="absolute inset-0 w-full h-full border-none"
-                    allowtransparency="true"
+                    allowTransparency={true}
                     allow="encrypted-media"
                     title={reel.title}
                     loading="lazy"
