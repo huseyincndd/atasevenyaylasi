@@ -31,7 +31,7 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-16 lg:gap-8 mb-20">
           
           {/* Brand Info */}
-          <div className="lg:col-span-5 flex flex-col items-center md:items-start text-center md:text-left">
+          <div className="lg:col-span-4 flex flex-col items-center md:items-start text-center md:text-left">
             <h2 className="text-3xl md:text-4xl font-light tracking-tight mb-6">
               Ataseven <span className="font-serif italic text-emerald-400">Kımız Yaylası</span>
             </h2>
@@ -60,46 +60,48 @@ export const Footer = () => {
           </div>
 
           {/* Contact Details */}
-          <div className="lg:col-span-4 flex flex-col items-center md:items-start text-center md:text-left">
-            <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-emerald-500 mb-8">İletişim</h4>
+          <div className="lg:col-span-4 flex flex-col items-center lg:items-start lg:mx-auto">
+            <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-emerald-500 mb-8 text-center lg:text-left">İletişim</h4>
             
-            <a href="tel:+905537836183" className="flex items-start gap-4 group mb-6 hover:text-emerald-400 transition-colors">
-              <div className="w-12 h-12 rounded-full bg-forest-800 flex items-center justify-center shrink-0 group-hover:bg-emerald-900/50 transition-colors border border-forest-700">
-                <Phone className="w-5 h-5 text-emerald-400" />
-              </div>
-              <div>
-                <span className="block text-xs text-beige-100/50 mb-1 uppercase tracking-widest">Telefon & WhatsApp</span>
-                <span className="text-xl font-light tracking-wide">+90 (553) 783 61 83</span>
-              </div>
-            </a>
+            <div className="flex flex-col gap-6 w-fit mx-auto lg:mx-0">
+              <a href="tel:+905537836183" className="flex items-start gap-4 group hover:text-emerald-400 transition-colors text-left">
+                <div className="w-12 h-12 rounded-full bg-forest-800 flex items-center justify-center shrink-0 group-hover:bg-emerald-900/50 transition-colors border border-forest-700">
+                  <Phone className="w-5 h-5 text-emerald-400" />
+                </div>
+                <div>
+                  <span className="block text-xs text-beige-100/50 mb-1 uppercase tracking-widest">Telefon & WhatsApp</span>
+                  <span className="text-xl font-light tracking-wide">+90 (553) 783 61 83</span>
+                </div>
+              </a>
 
-            <a href="mailto:info@atasevenkimiz.com" className="flex items-start gap-4 group mb-6 hover:text-emerald-400 transition-colors">
-              <div className="w-12 h-12 rounded-full bg-forest-800 flex items-center justify-center shrink-0 group-hover:bg-emerald-900/50 transition-colors border border-forest-700">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-400"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-              </div>
-              <div>
-                <span className="block text-xs text-beige-100/50 mb-1 uppercase tracking-widest">E-Posta</span>
-                <span className="text-base font-light tracking-wide">info@atasevenkimiz.com</span>
-              </div>
-            </a>
+              <a href="mailto:info@atasevenkimiz.com" className="flex items-start gap-4 group hover:text-emerald-400 transition-colors text-left">
+                <div className="w-12 h-12 rounded-full bg-forest-800 flex items-center justify-center shrink-0 group-hover:bg-emerald-900/50 transition-colors border border-forest-700">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-400"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                </div>
+                <div>
+                  <span className="block text-xs text-beige-100/50 mb-1 uppercase tracking-widest">E-Posta</span>
+                  <span className="text-base font-light tracking-wide">info@atasevenkimiz.com</span>
+                </div>
+              </a>
 
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-full bg-forest-800 flex items-center justify-center shrink-0 border border-forest-700">
-                <MapPin className="w-5 h-5 text-emerald-400" />
-              </div>
-              <div>
-                <span className="block text-xs text-beige-100/50 mb-1 uppercase tracking-widest">Adres</span>
-                <span className="text-base font-light leading-relaxed text-beige-100/80">
-                  24556. Sk. 180/8 <br />
-                  42090 Meram / KONYA <br />
-                  Türkiye
-                </span>
+              <div className="flex items-start gap-4 text-left">
+                <div className="w-12 h-12 rounded-full bg-forest-800 flex items-center justify-center shrink-0 border border-forest-700">
+                  <MapPin className="w-5 h-5 text-emerald-400" />
+                </div>
+                <div>
+                  <span className="block text-xs text-beige-100/50 mb-1 uppercase tracking-widest">Adres</span>
+                  <span className="text-base font-light leading-relaxed text-beige-100/80">
+                    24556. Sk. 180/8 <br />
+                    42090 Meram / KONYA <br />
+                    Türkiye
+                  </span>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Legal and Quick Links */}
-          <div className="lg:col-span-3 flex flex-col items-center md:items-start text-center md:text-left">
+          <div className="lg:col-span-4 flex flex-col items-center md:items-start lg:ml-auto text-center md:text-left">
             <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-emerald-500 mb-8">Kurumsal & Yasal</h4>
             <ul className="flex flex-col gap-4 font-light text-beige-100/70">
               <li><a href="/mesafeli-satis-sozlesmesi" className="hover:text-emerald-400 transition-colors">Mesafeli Satış Sözleşmesi</a></li>
