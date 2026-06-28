@@ -11,16 +11,7 @@ export const Navbar = () => {
   const { cartCount, setIsCartOpen } = useCart();
   const pathname = usePathname();
   const isHomePage = pathname === "/";
-  const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   // Prevent scroll when mobile menu is open
   useEffect(() => {
@@ -32,23 +23,32 @@ export const Navbar = () => {
     return () => { document.body.style.overflow = "unset"; }
   }, [mobileMenuOpen]);
 
-  const solidNav = !isHomePage || isScrolled;
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, target: string) => {
+    if (isHomePage && target.startsWith('#')) {
+      e.preventDefault();
+      setMobileMenuOpen(false);
+      const element = document.getElementById(target.substring(1));
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+        // Clean update of URL without stacking
+        window.history.pushState({}, '', `/${target}`);
+      }
+    } else {
+      setMobileMenuOpen(false);
+    }
+  };
 
   return (
     <>
       <nav
-        className={`fixed top-4 left-4 right-4 lg:left-1/2 lg:-translate-x-1/2 lg:w-full lg:max-w-6xl z-50 transition-all duration-500 rounded-full px-4 md:px-6 py-3 flex items-center justify-between ${
-          solidNav
-            ? "bg-white/90 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-200/50"
-            : "bg-white/10 backdrop-blur-md border border-white/20 shadow-lg"
-        }`}
+        className="fixed top-4 left-4 right-4 lg:left-1/2 lg:-translate-x-1/2 lg:w-full lg:max-w-6xl z-50 transition-all duration-500 rounded-full px-4 md:px-6 py-3 flex items-center justify-between bg-white/95 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-200/50"
       >
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 group z-50" onClick={() => setMobileMenuOpen(false)}>
-          <div className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-colors ${solidNav ? 'bg-emerald-600 text-white' : 'bg-white text-slate-900'}`}>
+        <Link href="/" className="flex items-center gap-2 group z-50" onClick={(e) => handleNavClick(e, '')}>
+          <div className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-colors bg-emerald-600 text-white">
             <Droplets size={18} />
           </div>
-          <span className={`font-serif italic font-bold text-xl md:text-2xl tracking-tight transition-colors ${solidNav ? 'text-slate-900' : 'text-white'}`}>
+          <span className="font-serif italic font-bold text-xl md:text-2xl tracking-tight transition-colors text-slate-900">
             Ataseven
           </span>
         </Link>
@@ -57,25 +57,36 @@ export const Navbar = () => {
         <div className="hidden md:flex items-center gap-8">
           <Link
             href="/"
-            className={`text-xs uppercase tracking-[0.2em] font-medium transition-colors ${
-              solidNav ? "text-slate-600 hover:text-emerald-600" : "text-white/90 hover:text-white"
-            }`}
+            onClick={(e) => handleNavClick(e, '')}
+            className="text-xs uppercase tracking-[0.2em] font-medium transition-colors text-slate-600 hover:text-emerald-600"
           >
             Ana Sayfa
           </Link>
           <Link
-            href={isHomePage ? "#products" : "/#products"}
-            className={`text-xs uppercase tracking-[0.2em] font-medium transition-colors ${
-              solidNav ? "text-slate-600 hover:text-emerald-600" : "text-white/90 hover:text-white"
-            }`}
+            href="/#atsutu"
+            onClick={(e) => handleNavClick(e, '#atsutu')}
+            className="text-xs uppercase tracking-[0.2em] font-medium transition-colors text-slate-600 hover:text-emerald-600"
           >
-            Koleksiyon
+            At Sütü
           </Link>
           <Link
-            href={isHomePage ? "#about" : "/#about"}
-            className={`text-xs uppercase tracking-[0.2em] font-medium transition-colors ${
-              solidNav ? "text-slate-600 hover:text-emerald-600" : "text-white/90 hover:text-white"
-            }`}
+            href="/#esseksutu"
+            onClick={(e) => handleNavClick(e, '#esseksutu')}
+            className="text-xs uppercase tracking-[0.2em] font-medium transition-colors text-slate-600 hover:text-emerald-600"
+          >
+            Eşek Sütü
+          </Link>
+          <Link
+            href="/#kimiz"
+            onClick={(e) => handleNavClick(e, '#kimiz')}
+            className="text-xs uppercase tracking-[0.2em] font-medium transition-colors text-slate-600 hover:text-emerald-600"
+          >
+            Kımız
+          </Link>
+          <Link
+            href="/#about"
+            onClick={(e) => handleNavClick(e, '#about')}
+            className="text-xs uppercase tracking-[0.2em] font-medium transition-colors text-slate-600 hover:text-emerald-600"
           >
             Hikayemiz
           </Link>
@@ -85,11 +96,7 @@ export const Navbar = () => {
         <div className="flex items-center gap-2 md:gap-4 z-50">
           <button
             onClick={() => setIsCartOpen(true)}
-            className={`relative p-2.5 rounded-full transition-colors ${
-              solidNav
-                ? "text-slate-700 hover:bg-slate-100"
-                : "text-white hover:bg-white/20"
-            }`}
+            className="relative p-2.5 rounded-full transition-colors text-slate-700 hover:bg-slate-100"
           >
             <ShoppingCart size={22} strokeWidth={1.5} />
             {cartCount > 0 && (
@@ -101,7 +108,7 @@ export const Navbar = () => {
 
           <button
             className={`md:hidden p-2.5 rounded-full transition-colors ${
-              solidNav || mobileMenuOpen ? "text-slate-700 bg-slate-100/50" : "text-white hover:bg-white/20"
+              mobileMenuOpen ? "text-slate-700 bg-slate-100/50" : "text-slate-700 hover:bg-slate-100"
             }`}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
@@ -114,63 +121,62 @@ export const Navbar = () => {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 z-40 bg-beige-100/95 backdrop-blur-2xl flex flex-col items-center justify-center px-6"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20, transition: { duration: 0.2, ease: "easeIn" } }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-0 z-40 bg-[#FAF9F6] flex flex-col justify-center px-8 md:px-12 overflow-hidden"
+            style={{ willChange: 'opacity, transform' }}
           >
-            <div className="flex flex-col items-center gap-8 text-center w-full max-w-sm">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="w-full"
-              >
-                <Link
-                  href="/"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block text-4xl font-light tracking-tight text-forest-900 py-4 border-b border-forest-900/10"
+            {/* Elegant Background Accents */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-100/50 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2"></div>
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-forest-900/5 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/2"></div>
+
+            <div className="flex flex-col gap-6 w-full max-w-sm mx-auto relative z-10 pt-16">
+              {[
+                { name: 'Ana Sayfa', href: '/', id: '' },
+                { name: 'At Sütü', href: '/#atsutu', id: '#atsutu' },
+                { name: 'Eşek Sütü', href: '/#esseksutu', id: '#esseksutu' },
+                { name: 'Kımız', href: '/#kimiz', id: '#kimiz' },
+                { name: 'Hikayemiz', href: '/#about', id: '#about' },
+              ].map((item, i) => (
+                <motion.div
+                  key={item.name}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  transition={{ delay: 0.1 + (i * 0.05), duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  className="w-full"
+                  style={{ willChange: 'opacity, transform' }}
                 >
-                  Ana Sayfa
-                </Link>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="w-full"
-              >
-                <Link
-                  href={isHomePage ? "#products" : "/#products"}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block text-4xl font-light tracking-tight text-forest-900 py-4 border-b border-forest-900/10"
-                >
-                  Koleksiyon
-                </Link>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="w-full"
-              >
-                <Link
-                  href={isHomePage ? "#about" : "/#about"}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block text-4xl font-light tracking-tight text-forest-900 py-4"
-                >
-                  Hikayemiz
-                </Link>
-              </motion.div>
+                  <Link
+                    href={item.href}
+                    onClick={(e) => handleNavClick(e, item.id)}
+                    className="group flex items-center justify-between py-2 border-b border-forest-900/5"
+                  >
+                    <span className="text-4xl sm:text-5xl font-light tracking-tight text-forest-900 group-hover:text-emerald-600 transition-colors duration-300">
+                      {item.name}
+                    </span>
+                    <span className="text-emerald-600 opacity-0 group-hover:opacity-100 transform -translate-x-4 group-hover:translate-x-0 transition-all duration-300 text-2xl">
+                      &rarr;
+                    </span>
+                  </Link>
+                </motion.div>
+              ))}
               
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-                className="mt-8 text-forest-900/50 uppercase tracking-widest text-xs font-medium"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ delay: 0.4, duration: 0.4, ease: "easeOut" }}
+                className="mt-12 flex flex-col gap-2"
+                style={{ willChange: 'opacity, transform' }}
               >
-                Ataseven Yaylası © 2026
+                <p className="text-forest-900/40 uppercase tracking-[0.2em] text-[10px] font-bold mb-2">Bize Ulaşın</p>
+                <a href="tel:+905537836183" className="text-forest-900 font-medium text-lg tracking-wide">+90 (553) 783 61 83</a>
+                <a href="https://www.instagram.com/atasevenkimizsut/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 text-sm font-medium hover:underline">
+                  Instagram'da Takip Edin
+                </a>
               </motion.div>
             </div>
           </motion.div>
