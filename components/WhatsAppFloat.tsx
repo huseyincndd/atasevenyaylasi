@@ -1,8 +1,12 @@
 "use client";
 import React from 'react';
 import { MessageCircle } from 'lucide-react';
+import { useCart } from "@/context/CartContext";
 
 export const WhatsAppFloat = () => {
+  const { cartCount, isCartOpen } = useCart();
+  const showMobileCartBar = cartCount > 0 && !isCartOpen;
+  
   // WhatsApp link format with phone number
   const whatsappUrl = "https://wa.me/905537836183";
 
@@ -11,7 +15,9 @@ export const WhatsAppFloat = () => {
       href={whatsappUrl} 
       target="_blank" 
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-50 group flex items-center justify-center"
+      className={`fixed right-4 md:right-6 z-50 group flex items-center justify-center transition-all duration-500 ${
+        showMobileCartBar ? 'bottom-28 md:bottom-6' : 'bottom-6 md:bottom-6'
+      }`}
       aria-label="WhatsApp ile İletişime Geçin"
     >
       {/* Tooltip on hover */}
