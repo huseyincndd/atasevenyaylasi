@@ -12,18 +12,7 @@ export const ProductList = () => {
 
   return (
     <section id="products" className="bg-[#FAF9F6] flex flex-col overflow-hidden">
-      {/* Introduction Header */}
-      <div className="py-24 px-4 md:px-12 text-center max-w-4xl mx-auto">
-        <span className="inline-block py-1.5 px-4 rounded-full bg-forest-900/5 text-forest-900 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase mb-6">
-          Koleksiyon
-        </span>
-        <h2 className="text-4xl md:text-5xl lg:text-7xl font-light text-forest-900 tracking-tight mb-8">
-          Doğadan Gelen <span className="italic font-serif text-emerald-600">Saf ve Değerli</span> Besin
-        </h2>
-        <p className="text-lg md:text-xl text-forest-900/60 font-light leading-relaxed">
-          Ataseven güvencesiyle üretilen %100 doğal sütlerimiz, hijyenik koşullarda sağılıp tazeliğini koruması amacıyla dondurularak sizlere ulaştırılır.
-        </p>
-      </div>
+      {/* Products Start Immediately */}
 
       {/* At Sütü Editorial Block */}
       <div id="atsutu" className="w-full relative min-h-screen lg:min-h-[850px] flex flex-col lg:block items-center justify-center overflow-hidden border-b border-forest-900/5 bg-[#FAF9F6] lg:bg-transparent pb-16 lg:pb-0">
