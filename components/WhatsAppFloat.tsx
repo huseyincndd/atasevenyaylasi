@@ -8,7 +8,7 @@ export const WhatsAppFloat = () => {
   const showMobileCartBar = cartCount > 0 && !isCartOpen;
   
   // WhatsApp link format with phone number
-  const whatsappUrl = "https://wa.me/905537836183";
+  const whatsappUrl = "https://wa.me/905325610367";
 
   return (
     <a 

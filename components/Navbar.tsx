@@ -173,7 +173,7 @@ export const Navbar = () => {
                 style={{ willChange: 'opacity, transform' }}
               >
                 <p className="text-forest-900/40 uppercase tracking-[0.2em] text-[10px] font-bold mb-2">Bize Ulaşın</p>
-                <a href="tel:+905537836183" className="text-forest-900 font-medium text-lg tracking-wide">+90 (553) 783 61 83</a>
+                <a href="tel:+905325610367" className="text-forest-900 font-medium text-lg tracking-wide">+90 (532) 561 03 67</a>
                 <a href="https://www.instagram.com/atasevenkimizsut/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 text-sm font-medium hover:underline">
                   Instagram'da Takip Edin
                 </a>

@@ -11,7 +11,7 @@ export default function MesafeliSatis() {
           <p>İşbu Sözleşme aşağıdaki taraflar arasında aşağıda belirtilen hüküm ve şartlar çerçevesinde imzalanmıştır.</p>
           <p><strong>SATICI:</strong> Ataseven Kımız Yaylası<br/>
           <strong>Adres:</strong> 24556. Sk. 180/8, 42090 Meram / Konya<br/>
-          <strong>Telefon:</strong> +90 (553) 783 61 83<br/>
+          <strong>Telefon:</strong> +90 (532) 561 03 67<br/>
           <strong>E-Posta:</strong> info@atasevenkimiz.com</p>
           
           <h2>2. Sözleşmenin Konusu</h2>

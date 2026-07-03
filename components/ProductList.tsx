@@ -22,7 +22,7 @@ export const ProductList = () => {
         {/* Massive Rounded Image */}
         <div className="w-full h-[50vh] lg:h-[80%] lg:absolute lg:left-0 lg:top-1/2 lg:-translate-y-1/2 lg:w-[55%] flex items-center justify-center z-10 pt-12 lg:pt-0 mb-12 lg:mb-0">
           <img 
-            src="/images/mares_milk_1782482818864.png" 
+            src="https://villaqrmenu.b-cdn.net/atasevenyaylasi/Gemini_Generated_Image_tkusiitkusiitkus.webp" 
             alt="At Sütü" 
             className="w-[90%] h-full object-cover rounded-[2rem] lg:rounded-[4rem] shadow-2xl transform hover:scale-[1.02] transition-transform duration-1000 ease-out"
           />
@@ -84,7 +84,7 @@ export const ProductList = () => {
                 <span className="text-5xl font-serif italic text-forest-900">1.500 <span className="text-2xl text-emerald-600">₺</span></span>
               </div>
               <button 
-                onClick={() => handleAddToCart("p1", "At Sütü", 1500, "/images/mares_milk_1782482818864.png")}
+                onClick={() => handleAddToCart("p1", "At Sütü", 1500, "https://villaqrmenu.b-cdn.net/atasevenyaylasi/Gemini_Generated_Image_tkusiitkusiitkus.webp")}
                 className="w-full sm:w-auto px-12 py-5 bg-forest-900 text-white rounded-full uppercase tracking-[0.2em] text-sm font-bold hover:bg-emerald-600 transition-all shadow-xl hover:-translate-y-1 transform duration-300"
               >
                 Sepete Ekle
@@ -102,7 +102,7 @@ export const ProductList = () => {
         {/* Massive Rounded Image */}
         <div className="w-full h-[50vh] lg:h-[80%] lg:absolute lg:right-0 lg:top-1/2 lg:-translate-y-1/2 lg:w-[55%] flex items-center justify-center z-10 pt-12 lg:pt-0 mb-12 lg:mb-0">
           <img 
-            src="/images/donkeys_milk_1782482831585.png" 
+            src="https://villaqrmenu.b-cdn.net/atasevenyaylasi/Gemini_Generated_Image_4sub9c4sub9c4sub.webp" 
             alt="Eşek Sütü" 
             className="w-[90%] h-full object-cover rounded-[2rem] lg:rounded-[4rem] shadow-2xl transform hover:scale-[1.02] transition-transform duration-1000 ease-out"
           />
@@ -164,7 +164,7 @@ export const ProductList = () => {
                 <span className="text-5xl font-serif italic text-forest-900">1.000 <span className="text-2xl text-emerald-600">₺</span></span>
               </div>
               <button 
-                onClick={() => handleAddToCart("p2", "Eşek Sütü", 1000, "/images/donkeys_milk_1782482831585.png")}
+                onClick={() => handleAddToCart("p2", "Eşek Sütü", 1000, "https://villaqrmenu.b-cdn.net/atasevenyaylasi/Gemini_Generated_Image_4sub9c4sub9c4sub.webp")}
                 className="w-full sm:w-auto px-12 py-5 border-2 border-forest-900 text-forest-900 rounded-full uppercase tracking-[0.2em] text-sm font-bold hover:bg-forest-900 hover:text-white transition-all shadow-xl hover:-translate-y-1 transform duration-300"
               >
                 Sepete Ekle

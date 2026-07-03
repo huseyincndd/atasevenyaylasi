@@ -64,13 +64,13 @@ export const Footer = () => {
             <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-emerald-500 mb-8 text-center lg:text-left">İletişim</h4>
             
             <div className="flex flex-col gap-6 w-fit mx-auto lg:mx-0">
-              <a href="tel:+905537836183" className="flex items-start gap-4 group hover:text-emerald-400 transition-colors text-left">
+              <a href="tel:+905325610367" className="flex items-start gap-4 group hover:text-emerald-400 transition-colors text-left">
                 <div className="w-12 h-12 rounded-full bg-forest-800 flex items-center justify-center shrink-0 group-hover:bg-emerald-900/50 transition-colors border border-forest-700">
                   <Phone className="w-5 h-5 text-emerald-400" />
                 </div>
                 <div>
                   <span className="block text-xs text-beige-100/50 mb-1 uppercase tracking-widest">Telefon & WhatsApp</span>
-                  <span className="text-xl font-light tracking-wide">+90 (553) 783 61 83</span>
+                  <span className="text-xl font-light tracking-wide">+90 (532) 561 03 67</span>
                 </div>
               </a>
 
