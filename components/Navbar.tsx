@@ -41,16 +41,15 @@ export const Navbar = () => {
   return (
     <>
       <nav
-        className="fixed top-4 left-4 right-4 lg:left-1/2 lg:-translate-x-1/2 lg:w-full lg:max-w-6xl z-50 transition-all duration-500 rounded-full px-4 md:px-6 py-3 flex items-center justify-between bg-white/95 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-200/50"
+        className="fixed top-4 left-4 right-4 lg:left-1/2 lg:-translate-x-1/2 lg:w-full lg:max-w-6xl z-50 transition-all duration-500 rounded-full px-4 md:px-6 py-0 flex items-center justify-between bg-white/95 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-200/50"
       >
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 group z-50" onClick={(e) => handleNavClick(e, '')}>
-          <div className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-colors bg-emerald-600 text-white">
-            <Droplets size={18} />
-          </div>
-          <span className="font-serif italic font-bold text-xl md:text-2xl tracking-tight transition-colors text-slate-900">
-            Ataseven
-          </span>
+        <Link href="/" className="flex items-center group z-50" onClick={(e) => handleNavClick(e, '')}>
+          <img 
+            src="https://villaqrmenu.b-cdn.net/atasevenlogo.png" 
+            alt="Ataseven Yaylası Logo" 
+            className="w-16 h-16 md:w-20 md:h-20 object-contain transition-transform group-hover:scale-105 scale-[1.15]"
+          />
         </Link>
 
         {/* Desktop Menu */}
