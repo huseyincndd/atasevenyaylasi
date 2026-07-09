@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { CheckCircle, Copy, PackageSearch } from "lucide-react";
-import { CopyButton } from "./CopyButton"; // We will create this client component
+import { CopyButton } from "@/app/checkout/basarili/CopyButton"; // We will create this client component
 
 export default async function SuccessPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const { order } = await searchParams;
