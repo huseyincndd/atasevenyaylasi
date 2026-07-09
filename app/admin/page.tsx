@@ -1,32 +1,50 @@
 import React from "react";
-import { cookies } from "next/headers";
-import { Lock } from "lucide-react";
-import { AdminDashboard } from "./AdminDashboard";
-import { LoginForm } from "./LoginForm";
+import prisma from "@/lib/prisma";
+import { OrderList } from "./OrderList";
+import { Package, ShoppingBag } from "lucide-react";
+
+export const dynamic = 'force-dynamic';
 
 export default async function AdminPage() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("admin_token")?.value;
-  const correctPassword = process.env.ADMIN_PASSWORD || "ataseven123";
-
-  if (token === correctPassword) {
-    return <AdminDashboard />;
-  }
+  const orders = await prisma.order.findMany({
+    orderBy: { createdAt: "desc" }
+  });
 
   return (
-    <div className="min-h-screen bg-slate-900 flex items-center justify-center p-6 relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-900/30 rounded-full blur-[120px] pointer-events-none"></div>
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-teal-900/30 rounded-full blur-[120px] pointer-events-none"></div>
-
-      <div className="bg-slate-800/80 backdrop-blur-xl p-10 md:p-14 rounded-[2.5rem] shadow-2xl border border-slate-700 max-w-md w-full text-center relative z-10">
-        <div className="w-20 h-20 bg-slate-700 text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-8 shadow-inner">
-          <Lock size={32} />
-        </div>
-        <h1 className="text-3xl font-bold text-white mb-2 tracking-tight">Yönetici Girişi</h1>
-        <p className="text-slate-400 mb-8 text-sm">Siparişleri yönetmek için parolanızı girin.</p>
-        
-        <LoginForm />
+    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="flex flex-col gap-2">
+        <h1 className="text-3xl font-bold text-slate-800">Sipariş Yönetimi</h1>
+        <p className="text-slate-500">Tüm siparişleri, durumlarını ve müşteri detaylarını buradan takip edebilirsiniz.</p>
       </div>
+
+      {/* İstatistikler */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
+          <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center"><Package size={24} /></div>
+          <div>
+            <p className="text-sm text-slate-500 font-medium">Toplam Sipariş</p>
+            <h3 className="text-2xl font-bold text-slate-800">{orders.length}</h3>
+          </div>
+        </div>
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
+          <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center"><ShoppingBag size={24} /></div>
+          <div>
+            <p className="text-sm text-slate-500 font-medium">Ödenmiş Siparişler</p>
+            <h3 className="text-2xl font-bold text-slate-800">{orders.filter(o => o.status === "PAID" || o.status === "SHIPPED").length}</h3>
+          </div>
+        </div>
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
+          <div className="w-14 h-14 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center"><span className="text-2xl font-bold">₺</span></div>
+          <div>
+            <p className="text-sm text-slate-500 font-medium">Toplam Ciro (Ödenen)</p>
+            <h3 className="text-2xl font-bold text-slate-800">
+              {orders.filter(o => o.status === "PAID" || o.status === "SHIPPED").reduce((sum, o) => sum + o.totalAmount, 0).toLocaleString("tr-TR")} ₺
+            </h3>
+          </div>
+        </div>
+      </div>
+
+      <OrderList initialOrders={orders} />
     </div>
   );
 }

@@ -1,15 +1,64 @@
 "use client";
 import React, { useState } from "react";
 import { updateOrderStatus, updateOrderMessageStatus } from "./actions";
-import { Check, Clock, XCircle, Truck, ChevronDown, Search, Filter, MessageCircle } from "lucide-react";
+import { Check, Clock, XCircle, Truck, ChevronDown, Search, Filter, MessageCircle, Eye, Download, Printer } from "lucide-react";
+import Link from "next/link";
 
 export const OrderList = ({ initialOrders }: { initialOrders: any[] }) => {
   const [orders, setOrders] = useState(initialOrders);
   const [loadingId, setLoadingId] = useState<string | null>(null);
+  const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
   
   // Filtreleme stateleri
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
+
+  const toggleOrderSelection = (id: string) => {
+    setSelectedOrders(prev => prev.includes(id) ? prev.filter(oId => oId !== id) : [...prev, id]);
+  };
+
+  const toggleAllSelection = (filteredOrderIds: string[]) => {
+    if (selectedOrders.length === filteredOrderIds.length) {
+      setSelectedOrders([]);
+    } else {
+      setSelectedOrders(filteredOrderIds);
+    }
+  };
+
+  const exportToExcel = () => {
+    if (selectedOrders.length === 0) return;
+    
+    // Yalnızca seçili siparişleri filtrele
+    const ordersToExport = orders.filter(o => selectedOrders.includes(o.id));
+    
+    // CSV Başlıkları
+    const headers = ["Siparis_No", "Tarih", "Musteri_Adi", "Telefon", "E-Posta", "Toplam_Tutar", "Adres"];
+    
+    // Verileri CSV formatına dönüştür
+    const csvRows = ordersToExport.map(order => {
+      const date = new Date(order.createdAt).toLocaleDateString("tr-TR");
+      const name = `"${order.customerName.replace(/"/g, '""')}"`;
+      const phone = `"${order.customerPhone}"`;
+      const email = `"${order.customerEmail}"`;
+      const amount = order.totalAmount;
+      const address = `"${order.customerAddress.replace(/"/g, '""').replace(/\n/g, ' ')}"`;
+      
+      return [order.orderNumber, date, name, phone, email, amount, address].join(",");
+    });
+    
+    // BOM (Türkçe karakter desteği için) + CSV İçeriği
+    const csvContent = "\uFEFF" + headers.join(",") + "\n" + csvRows.join("\n");
+    
+    // İndirme işlemi
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `Siparisler_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   const handleStatusChange = async (orderId: string, newStatus: string) => {
     setLoadingId(orderId);
@@ -94,10 +143,42 @@ export const OrderList = ({ initialOrders }: { initialOrders: any[] }) => {
         </div>
       </div>
       
+      {/* Toplu İşlem Çubuğu */}
+      {selectedOrders.length > 0 && (
+        <div className="bg-emerald-50 border-b border-emerald-100 p-4 flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-top-2">
+          <div className="text-emerald-800 font-semibold text-sm">
+            {selectedOrders.length} sipariş seçildi
+          </div>
+          <div className="flex items-center gap-3 w-full sm:w-auto">
+            <button 
+              onClick={exportToExcel}
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-colors shadow-sm"
+            >
+              <Download size={16} /> Excel İndir
+            </button>
+            <Link 
+              href={`/admin/print?ids=${selectedOrders.join(',')}`}
+              target="_blank"
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-colors shadow-sm"
+            >
+              <Printer size={16} /> Etiket Yazdır
+            </Link>
+          </div>
+        </div>
+      )}
+
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider">
+              <th className="p-4 w-10">
+                <input 
+                  type="checkbox" 
+                  checked={filteredOrders.length > 0 && selectedOrders.length === filteredOrders.length}
+                  onChange={() => toggleAllSelection(filteredOrders.map(o => o.id))}
+                  className="w-4 h-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
+                />
+              </th>
               <th className="p-4 font-semibold">Sipariş / Tarih</th>
               <th className="p-4 font-semibold">Müşteri Bilgileri</th>
               <th className="p-4 font-semibold">Sepet Tutarı</th>
@@ -110,61 +191,71 @@ export const OrderList = ({ initialOrders }: { initialOrders: any[] }) => {
               <tr><td colSpan={5} className="p-8 text-center text-slate-400">Aranan kriterlere uygun sipariş bulunamadı.</td></tr>
             ) : (
               filteredOrders.map((order: any) => (
-                <tr key={order.id} className="hover:bg-slate-50/50 transition-colors">
+                <tr key={order.id} className={`hover:bg-slate-50/50 transition-colors ${selectedOrders.includes(order.id) ? 'bg-emerald-50/30' : ''}`}>
+                  <td className="p-4 align-middle">
+                    <input 
+                      type="checkbox" 
+                      checked={selectedOrders.includes(order.id)}
+                      onChange={() => toggleOrderSelection(order.id)}
+                      className="w-4 h-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
+                    />
+                  </td>
                   <td className="p-4 align-top">
                     <div className="font-mono text-xs text-slate-800 font-bold mb-1">{order.orderNumber}</div>
                     <div className="text-xs text-slate-400">{new Date(order.createdAt).toLocaleString("tr-TR")}</div>
                   </td>
                   <td className="p-4 align-top">
                     <div className="font-semibold text-slate-800">{order.customerName}</div>
-                    <div className="text-slate-500 text-xs mb-2 flex flex-col gap-1 mt-1">
-                      <span>{order.customerEmail}</span>
-                      <div className="flex items-center gap-2">
-                        <span>{order.customerPhone}</span>
-                        <a 
-                          onClick={() => handleMessageSent(order.id)}
-                          href={`https://wa.me/${order.customerPhone.replace(/[^0-9]/g, '')}?text=Merhaba%20${encodeURIComponent(order.customerName)},%20Ataseven%20Yaylası'ndan%20verdiğiniz%20${order.orderNumber}%20numaralı%20siparişiniz%20alınmıştır.%20`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`inline-flex items-center justify-center text-white rounded-full w-7 h-7 transition-all shadow-sm ${order.isMessageSent ? 'bg-emerald-500 hover:bg-emerald-600' : 'bg-rose-500 hover:bg-rose-600 animate-pulse'}`}
-                          title={order.isMessageSent ? "Mesaj Gönderildi" : "Mesaj Gönderilmedi! Tıkla ve Gönder"}
-                        >
-                          <MessageCircle size={14} />
-                        </a>
-                      </div>
-                    </div>
-                    <div className="text-slate-600 text-xs leading-relaxed max-w-[250px] bg-slate-50 p-2 rounded-md border border-slate-100">
-                      {order.customerAddress}
-                    </div>
+                    <div className="text-slate-500 text-xs">{order.customerPhone}</div>
                   </td>
                   <td className="p-4 align-top">
                     <div className="font-bold text-slate-800 text-base">{order.totalAmount.toLocaleString("tr-TR")} ₺</div>
-                    <div className="mt-2 space-y-1">
-                      {Array.isArray(order.items) && order.items.map((item: any, idx: number) => (
-                        <div key={idx} className="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded inline-block mr-1 mb-1">
-                          {item.quantity}x {item.name}
-                        </div>
-                      ))}
-                    </div>
+                    <div className="text-xs text-slate-400 mt-1">{Array.isArray(order.items) ? order.items.length : 0} Çeşit Ürün</div>
                   </td>
                   <td className="p-4 align-top">
                     {getStatusBadge(order.status)}
                   </td>
                   <td className="p-4 align-top">
-                    <div className="relative inline-block w-32">
-                      <select
-                        disabled={loadingId === order.id}
-                        value={order.status}
-                        onChange={(e) => handleStatusChange(order.id, e.target.value)}
-                        className="appearance-none w-full bg-white border border-slate-200 text-slate-700 py-2 px-3 pr-8 rounded-lg text-xs font-semibold focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 cursor-pointer disabled:opacity-50"
-                      >
-                        <option value="PENDING">Bekliyor</option>
-                        <option value="PAID">Ödendi</option>
-                        <option value="SHIPPED">Kargolandı</option>
-                        <option value="FAILED">İptal/Başarısız</option>
-                      </select>
-                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400">
-                        <ChevronDown size={14} />
+                    <div className="flex flex-col gap-2">
+                      <div className="relative inline-block w-32">
+                        <select
+                          disabled={loadingId === order.id}
+                          value={order.status}
+                          onChange={(e) => handleStatusChange(order.id, e.target.value)}
+                          className="appearance-none w-full bg-white border border-slate-200 text-slate-700 py-2 px-3 pr-8 rounded-lg text-xs font-semibold focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 cursor-pointer disabled:opacity-50"
+                        >
+                          <option value="PENDING">Bekliyor</option>
+                          <option value="PAID">Ödendi</option>
+                          <option value="SHIPPED">Kargolandı</option>
+                          <option value="FAILED">İptal/Baş.sız</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400">
+                          <ChevronDown size={14} />
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2 mt-1">
+                        <a 
+                          onClick={() => handleMessageSent(order.id)}
+                          href={`https://wa.me/${order.customerPhone.replace(/[^0-9]/g, '')}?text=Merhaba%20${encodeURIComponent(order.customerName)},%20Ataseven%20Yaylası'ndan%20verdiğiniz%20${order.orderNumber}%20numaralı%20siparişiniz%20alınmıştır.%20`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`inline-flex items-center justify-center text-white rounded-md px-2 py-1.5 text-xs font-semibold transition-all shadow-sm w-full ${order.isMessageSent ? 'bg-emerald-500 hover:bg-emerald-600' : 'bg-rose-500 hover:bg-rose-600 animate-pulse'}`}
+                          title={order.isMessageSent ? "Mesaj Gönderildi" : "Mesaj Gönderilmedi! Tıkla ve Gönder"}
+                        >
+                          <MessageCircle size={14} className="mr-1" />
+                          {order.isMessageSent ? 'Gönderildi' : 'WhatsApp'}
+                        </a>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <Link 
+                          href={`/admin/orders/${order.id}`}
+                          className="inline-flex items-center justify-center bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-md px-2 py-1.5 text-xs font-semibold transition-colors shadow-sm w-full border border-blue-200"
+                        >
+                          <Eye size={14} className="mr-1" />
+                          İncele
+                        </Link>
                       </div>
                     </div>
                   </td>

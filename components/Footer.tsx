@@ -1,6 +1,7 @@
 "use client";
 import React from 'react';
 import { MapPin, Phone, ArrowUpRight } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 const InstagramIcon = ({ className }: { className?: string }) => (
   <svg 
@@ -22,6 +23,11 @@ const InstagramIcon = ({ className }: { className?: string }) => (
 );
 
 export const Footer = () => {
+  const pathname = usePathname();
+  
+  // Admin sayfalarında genel Footer'ı gizle
+  if (pathname?.startsWith("/admin")) return null;
+
   return (
     <footer className="bg-forest-900 text-beige-100 relative overflow-hidden pt-24 pb-12">
       {/* Background organic blob */}

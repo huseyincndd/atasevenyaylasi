@@ -26,9 +26,10 @@ model Order {
   customerPhone   String
   customerAddress String
   totalAmount     Float
-  status          String   @default("PENDING")
+  status          String   @default("PENDING") // PENDING, PAID, SHIPPED, FAILED
   isMessageSent   Boolean  @default(false)
-  items           Json
+  trackingNumber  String?
+  items           Json     // Sepetteki ürünlerin detayı
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }

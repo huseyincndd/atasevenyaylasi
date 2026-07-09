@@ -38,6 +38,9 @@ export const Navbar = () => {
     }
   };
 
+  // Admin sayfalarında genel Navbar'ı gizle
+  if (pathname?.startsWith("/admin")) return null;
+
   return (
     <>
       <nav
@@ -89,6 +92,13 @@ export const Navbar = () => {
           >
             Hikayemiz
           </Link>
+          <Link
+            href="/kargo-takip"
+            onClick={() => setMobileMenuOpen(false)}
+            className="text-xs uppercase tracking-[0.2em] font-bold transition-colors text-emerald-600 hover:text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full"
+          >
+            Sipariş Takibi
+          </Link>
         </div>
 
         {/* Cart Icon & Mobile Toggle */}
@@ -133,6 +143,7 @@ export const Navbar = () => {
 
             <div className="flex flex-col gap-6 w-full max-w-sm mx-auto relative z-10 pt-16">
               {[
+                { name: 'Sipariş Takibi', href: '/kargo-takip', id: '' },
                 { name: 'Ana Sayfa', href: '/', id: '' },
                 { name: 'At Sütü', href: '/#atsutu', id: '#atsutu' },
                 { name: 'Eşek Sütü', href: '/#esseksutu', id: '#esseksutu' },

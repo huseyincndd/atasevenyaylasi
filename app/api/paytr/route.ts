@@ -102,7 +102,7 @@ export async function POST(req: NextRequest) {
     formData.append("user_name", user_name);
     formData.append("user_address", user_address);
     formData.append("user_phone", user_phone);
-    formData.append("merchant_ok_url", `${site_url}/checkout/basarili`);
+    formData.append("merchant_ok_url", `${site_url}/checkout/basarili?order=${merchant_oid}`);
     formData.append("merchant_fail_url", `${site_url}/checkout/basarisiz`);
     formData.append("timeout_limit", "30");
     formData.append("currency", currency);

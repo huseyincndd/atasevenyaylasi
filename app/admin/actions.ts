@@ -60,3 +60,24 @@ export async function updateOrderMessageStatus(orderId: string, status: boolean)
     return { success: false, error: "Mesaj durumu güncellenemedi." };
   }
 }
+
+export async function saveTrackingNumber(formData: FormData) {
+  try {
+    const orderId = formData.get("orderId") as string;
+    const trackingNumber = formData.get("trackingNumber") as string;
+    
+    if (!orderId) return { success: false, error: "Sipariş ID eksik." };
+
+    await prisma.order.update({
+      where: { id: orderId },
+      data: { trackingNumber: trackingNumber || null } // Boş bırakıldıysa null yap
+    });
+
+    revalidatePath(`/admin/orders/${orderId}`);
+    return { success: true };
+  } catch (error) {
+    console.error(error);
+    return { success: false, error: "Takip numarası kaydedilemedi." };
+  }
+}
+

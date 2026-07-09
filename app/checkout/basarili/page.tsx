@@ -1,8 +1,12 @@
 import React from "react";
 import Link from "next/link";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Copy, PackageSearch } from "lucide-react";
+import { CopyButton } from "./CopyButton"; // We will create this client component
 
-export default function SuccessPage() {
+export default async function SuccessPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
+  const { order } = await searchParams;
+  const orderNumber = typeof order === 'string' ? order : null;
+
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 relative overflow-hidden">
       {/* Background blobs */}
@@ -16,9 +20,28 @@ export default function SuccessPage() {
         </div>
         
         <h2 className="text-3xl font-bold text-slate-800 mb-4 tracking-tight">Ödeme Başarılı!</h2>
-        <p className="text-slate-500 mb-10 text-lg leading-relaxed">
+        <p className="text-slate-500 mb-8 text-lg leading-relaxed">
           Siparişiniz başarıyla alındı. Doğal ürünleriniz özenle paketlenip en kısa sürede adresinize doğru yola çıkacak.
         </p>
+
+        {orderNumber && (
+          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 mb-10 text-left relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-100 rounded-full blur-2xl -translate-y-1/2 translate-x-1/3"></div>
+            
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+              <PackageSearch size={16} /> Sipariş Takip Kodunuz
+            </p>
+            <div className="flex items-center justify-between bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+              <span className="font-mono text-xl font-bold text-emerald-600 tracking-wider">
+                {orderNumber}
+              </span>
+              <CopyButton text={orderNumber} />
+            </div>
+            <p className="text-xs text-slate-500 mt-4 leading-relaxed">
+              Bu kodu kullanarak web sitemizdeki <Link href="/kargo-takip" className="text-emerald-600 font-bold hover:underline">Sipariş Takip</Link> sayfasından kargonuzun durumunu anlık olarak öğrenebilirsiniz.
+            </p>
+          </div>
+        )}
         
         <Link
           href="/"
