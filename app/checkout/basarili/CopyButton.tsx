@@ -18,8 +18,8 @@ export const CopyButton = ({ text }: { text: string }) => {
   return (
     <button
       onClick={handleCopy}
-      className={`p-2 rounded-lg transition-colors flex items-center gap-2 text-sm font-medium ${
-        copied ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-500 hover:bg-slate-200"
+      className={`w-full sm:w-auto px-4 py-2.5 sm:p-2 sm:px-3 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm font-semibold sm:font-medium shadow-sm sm:shadow-none border border-slate-200 sm:border-transparent ${
+        copied ? "bg-emerald-100 text-emerald-700 border-emerald-200" : "bg-slate-50 text-slate-600 hover:bg-slate-100"
       }`}
       title="Kodu Kopyala"
     >

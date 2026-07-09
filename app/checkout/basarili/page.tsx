@@ -31,11 +31,13 @@ export default async function SuccessPage({ searchParams }: { searchParams: Prom
             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2">
               <PackageSearch size={16} /> Sipariş Takip Kodunuz
             </p>
-            <div className="flex items-center justify-between bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-              <span className="font-mono text-xl font-bold text-emerald-600 tracking-wider">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between bg-white border border-slate-200 rounded-xl p-3 sm:p-4 shadow-sm gap-3">
+              <span className="font-mono text-sm sm:text-lg font-bold text-emerald-600 tracking-wider break-all">
                 {orderNumber}
               </span>
-              <CopyButton text={orderNumber} />
+              <div className="w-full sm:w-auto shrink-0">
+                <CopyButton text={orderNumber} />
+              </div>
             </div>
             <p className="text-xs text-slate-500 mt-4 leading-relaxed">
               Bu kodu kullanarak web sitemizdeki <Link href="/kargo-takip" className="text-emerald-600 font-bold hover:underline">Sipariş Takip</Link> sayfasından kargonuzun durumunu anlık olarak öğrenebilirsiniz.
