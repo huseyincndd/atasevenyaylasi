@@ -49,8 +49,8 @@ export async function POST(req: NextRequest) {
     // PayTR toplam tutarı kuruş cinsinden (TL * 100) ister.
     const payment_amount = calculatedTotal * 100;
     
-    // Benzersiz Sipariş Numarası Oluşturma
-    const merchant_oid = `ORDER_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+    // Benzersiz Sipariş Numarası Oluşturma (PayTR sadece harf ve rakam kabul eder, alt tire vb. yasaktır)
+    const merchant_oid = `ORDER${Date.now()}${Math.floor(Math.random() * 1000)}`;
 
     const user_ip = req.headers.get("x-forwarded-for") || "127.0.0.1";
     const user_name = user.name;
