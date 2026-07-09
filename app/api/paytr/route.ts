@@ -57,7 +57,8 @@ export async function POST(req: NextRequest) {
     const user_name = user.name;
     const user_address = user.address;
     const user_phone = user.phone;
-    const user_basket = JSON.stringify(paytrBasket);
+    // PayTR beklentisi: user_basket JSON formatına çevrilmeli ve ardından Base64 ile encode edilmelidir.
+    const user_basket = Buffer.from(JSON.stringify(paytrBasket)).toString("base64");
     const user_email = user.email;
 
     const no_installment = "1"; // Taksit istemiyorsak 1 (opsiyonel)
