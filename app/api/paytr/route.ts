@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
     const no_installment = "1"; // Taksit istemiyorsak 1 (opsiyonel)
     const max_installment = "0"; // 0: tüm taksitler açık
     const currency = "TL";
-    const test_mode = "1"; // 1: Test modu açık, Canlıya geçerken bunu '0' yapacağız veya tamamen panelden kontrol edeceğiz.
+    const test_mode = "0"; // 0: Canlı mod (Gerçek ödemeler), 1: Test modu
     
     // Güvenlik: Hash oluşturma (Token için)
     // Şifreleme mantığı: merchant_id + user_ip + merchant_oid + email + payment_amount + user_basket + no_installment + max_installment + currency + test_mode
