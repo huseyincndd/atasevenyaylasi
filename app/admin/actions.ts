@@ -66,7 +66,10 @@ export async function saveTrackingNumber(formData: FormData) {
     const orderId = formData.get("orderId") as string;
     const trackingNumber = formData.get("trackingNumber") as string;
     
-    if (!orderId) return { success: false, error: "Sipariş ID eksik." };
+    if (!orderId) {
+      console.error("Sipariş ID eksik.");
+      return;
+    }
 
     await prisma.order.update({
       where: { id: orderId },
@@ -74,10 +77,8 @@ export async function saveTrackingNumber(formData: FormData) {
     });
 
     revalidatePath(`/admin/orders/${orderId}`);
-    return { success: true };
   } catch (error) {
-    console.error(error);
-    return { success: false, error: "Takip numarası kaydedilemedi." };
+    console.error("Takip numarası kaydedilemedi:", error);
   }
 }
 
