@@ -237,7 +237,7 @@ export const OrderList = ({ initialOrders }: { initialOrders: any[] }) => {
                       <div className="flex items-center gap-2 mt-1">
                         <a 
                           onClick={() => handleMessageSent(order.id)}
-                          href={`https://wa.me/${order.customerPhone.replace(/[^0-9]/g, '')}?text=Merhaba%20${encodeURIComponent(order.customerName)},%20Ataseven%20Yaylası'ndan%20verdiğiniz%20${order.orderNumber}%20numaralı%20siparişiniz%20alınmıştır.%20`}
+                          href={`https://wa.me/${order.customerPhone.replace(/[^0-9]/g, '')}?text=Merhaba%20${encodeURIComponent(order.customerName)},%20Ataseven%20Yaylası'ndan%20verdiğiniz%20siparişiniz%20alınmıştır.%20Siparişinizi%20sitemizdeki%20kargo%20takip%20bölümünden%20takip%20edebilirsiniz.%20Sipariş%20Takip%20Numaranız:%20${order.orderNumber}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className={`inline-flex items-center justify-center text-white rounded-md px-2 py-1.5 text-xs font-semibold transition-all shadow-sm w-full ${order.isMessageSent ? 'bg-emerald-500 hover:bg-emerald-600' : 'bg-rose-500 hover:bg-rose-600 animate-pulse'}`}

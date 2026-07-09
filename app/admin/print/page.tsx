@@ -33,7 +33,7 @@ export default async function PrintLabelsPage({ searchParams }: { searchParams: 
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 print-grid">
         {orders.map((order) => (
-          <div key={order.id} className="border-2 border-black p-6 rounded-lg break-inside-avoid print-card flex flex-col justify-between" style={{ minHeight: "250px" }}>
+          <div key={order.id} className="border-2 border-black p-4 md:p-6 rounded-lg break-inside-avoid print-card flex flex-col justify-between" style={{ minHeight: "220px" }}>
             
             <div className="flex justify-between items-start mb-4 border-b border-gray-300 pb-2">
               <div>
@@ -70,9 +70,9 @@ export default async function PrintLabelsPage({ searchParams }: { searchParams: 
           body { background: white; margin: 0; padding: 0; }
           .print-hidden { display: none !important; }
           .print-wrapper { width: 100%; }
-          .print-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1cm; padding: 0; }
-          .print-card { border: 2px solid black; padding: 1cm; border-radius: 12px; page-break-inside: avoid; margin-bottom: 0.5cm; }
-          @page { margin: 1cm; }
+          .print-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5cm; padding: 0; }
+          .print-card { border: 2px solid black; padding: 0.5cm; border-radius: 8px; page-break-inside: avoid; height: max-content; }
+          @page { margin: 0.5cm; size: A4 portrait; }
         }
       `}} />
 
