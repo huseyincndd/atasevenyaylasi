@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
+import prisma from "@/lib/prisma";
+import { sendOrderEmail } from "@/lib/mail";
 
 export async function POST(req: NextRequest) {
   try {
@@ -45,15 +47,28 @@ export async function POST(req: NextRequest) {
       // ÖDEME BAŞARILI
       console.log("ÖDEME BAŞARILI! Sipariş No:", merchant_oid, "Tutar:", total_amount);
       
-      // BURADA VERİTABANINA KAYIT VE MÜŞTERİYE MAİL ATMA GİBİ İŞLEMLER YAPILABİLİR.
-      // Örn: db.orders.update({ id: merchant_oid }, { status: 'PAID' })
+      if (merchant_oid) {
+        const order = await prisma.order.update({
+          where: { orderNumber: merchant_oid },
+          data: { status: "PAID" }
+        });
+        
+        // Müşteriye Fatura/Bilgilendirme Maili At (ŞİMDİLİK DEAKTİF)
+        // if (order.customerEmail) {
+        //   sendOrderEmail(order.orderNumber, order.customerEmail, order.customerName);
+        // }
+      }
       
     } else {
       // ÖDEME BAŞARISIZ
       console.error("ÖDEME BAŞARISIZ. Sebep:", failed_reason_msg, "Sipariş No:", merchant_oid);
       
-      // BURADA VERİTABANINDAKİ SİPARİŞİ İPTAL EDEBİLİR VEYA KAYDEDEBİLİRSİNİZ.
-      // Örn: db.orders.update({ id: merchant_oid }, { status: 'FAILED' })
+      if (merchant_oid) {
+        await prisma.order.update({
+          where: { orderNumber: merchant_oid },
+          data: { status: "FAILED" }
+        });
+      }
     }
 
     // Her iki durumda da PAYTR'a OK yanıtı dönmek ZORUNLUDUR.

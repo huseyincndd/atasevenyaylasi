@@ -5,13 +5,16 @@ import { KimizSection } from "../components/KimizSection";
 import { SocialProof } from "../components/SocialProof";
 import { FarmStory } from "../components/FarmStory";
 import { Testimonials } from "../components/Testimonials";
+import { getProductsFromDB } from "@/lib/products";
 
-export default function Home() {
+export default async function Home() {
+  const products = await getProductsFromDB();
+
   return (
     <div className="flex flex-col min-h-screen">
       <Hero />
-      <KimizSection />
-      <ProductList />
+      <KimizSection products={products} />
+      <ProductList products={products} />
       <TrustFeatures />
       <SocialProof />
       <FarmStory />

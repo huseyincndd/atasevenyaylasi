@@ -4,20 +4,26 @@ import React, { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { Snowflake, Truck, ChevronRight } from "lucide-react";
 
-const kimizPackages = [
-  { id: "k1", count: 1, price: 500, label: "200 ML Cam Şişe" },
-  { id: "k2", count: 2, price: 750, label: "2x 200 ML Cam Şişe" },
-  { id: "k3", count: 3, price: 1000, label: "3x 200 ML Cam Şişe" },
-  { id: "k4", count: 4, price: 1250, label: "4x 200 ML Cam Şişe" },
-  { id: "k5", count: 5, price: 1500, label: "5x 200 ML Cam Şişe" },
-  { id: "k6", count: 6, price: 1750, label: "6x 200 ML Cam Şişe" },
-  { id: "k12", count: 12, price: 3000, label: "12x 200 ML Cam Şişe" },
-  { id: "k18", count: 18, price: 4000, label: "18x 200 ML Cam Şişe" },
-  { id: "k24", count: 24, price: 5500, label: "24x 200 ML Cam Şişe" },
-];
-
-export const KimizSection = () => {
+export const KimizSection = ({ products = [] }: { products?: any[] }) => {
   const { addToCart } = useCart();
+  
+  const getKimizPrice = (id: string, defaultPrice: number) => {
+    const p = products.find((p) => p.id === id);
+    return p ? p.price : defaultPrice;
+  };
+
+  const kimizPackages = [
+    { id: "k1", count: 1, price: getKimizPrice("k1", 500), label: "200 ML Cam Şişe" },
+    { id: "k2", count: 2, price: getKimizPrice("k2", 750), label: "2x 200 ML Cam Şişe" },
+    { id: "k3", count: 3, price: getKimizPrice("k3", 1000), label: "3x 200 ML Cam Şişe" },
+    { id: "k4", count: 4, price: getKimizPrice("k4", 1250), label: "4x 200 ML Cam Şişe" },
+    { id: "k5", count: 5, price: getKimizPrice("k5", 1500), label: "5x 200 ML Cam Şişe" },
+    { id: "k6", count: 6, price: getKimizPrice("k6", 1750), label: "6x 200 ML Cam Şişe" },
+    { id: "k12", count: 12, price: getKimizPrice("k12", 3000), label: "12x 200 ML Cam Şişe" },
+    { id: "k18", count: 18, price: getKimizPrice("k18", 4000), label: "18x 200 ML Cam Şişe" },
+    { id: "k24", count: 24, price: getKimizPrice("k24", 5500), label: "24x 200 ML Cam Şişe" },
+  ];
+
   const [selectedPkg, setSelectedPkg] = useState(kimizPackages[0]);
 
   return (

@@ -3,8 +3,16 @@ import React from "react";
 import { useCart } from "@/context/CartContext";
 import { Package, Truck, Snowflake, Shield } from "lucide-react";
 
-export const ProductList = () => {
+export const ProductList = ({ products = [] }: { products?: any[] }) => {
   const { addToCart } = useCart();
+  
+  const getPrice = (id: string, defaultPrice: number) => {
+    const p = products.find(p => p.id === id);
+    return p ? p.price : defaultPrice;
+  };
+
+  const atSutuPrice = getPrice("p1", 1500);
+  const esekSutuPrice = getPrice("p2", 1000);
 
   const handleAddToCart = (id: string, name: string, price: number, image: string) => {
     addToCart({ id, name, price, image, quantity: 1 });
@@ -81,10 +89,10 @@ export const ProductList = () => {
             <div className="flex flex-col sm:flex-row items-center justify-between pt-10 border-t border-forest-900/5 gap-6">
               <div className="text-center sm:text-left">
                 <span className="block text-xs font-semibold text-forest-900/40 uppercase tracking-widest mb-1">Fiyat / KG</span>
-                <span className="text-5xl font-serif italic text-forest-900">1.500 <span className="text-2xl text-emerald-600">₺</span></span>
+                <span className="text-5xl font-serif italic text-forest-900">{atSutuPrice.toLocaleString("tr-TR")} <span className="text-2xl text-emerald-600">₺</span></span>
               </div>
               <button 
-                onClick={() => handleAddToCart("p1", "At Sütü", 1500, "https://villaqrmenu.b-cdn.net/atasevenyaylasi/Gemini_Generated_Image_tkusiitkusiitkus.webp")}
+                onClick={() => handleAddToCart("p1", "At Sütü", atSutuPrice, "https://villaqrmenu.b-cdn.net/atasevenyaylasi/Gemini_Generated_Image_tkusiitkusiitkus.webp")}
                 className="w-full sm:w-auto px-12 py-5 bg-forest-900 text-white rounded-full uppercase tracking-[0.2em] text-sm font-bold hover:bg-emerald-600 transition-all shadow-xl hover:-translate-y-1 transform duration-300"
               >
                 Sepete Ekle
@@ -161,10 +169,10 @@ export const ProductList = () => {
             <div className="flex flex-col sm:flex-row items-center justify-between pt-10 border-t border-forest-900/5 gap-6">
               <div className="text-center sm:text-left">
                 <span className="block text-xs font-semibold text-forest-900/40 uppercase tracking-widest mb-1">Fiyat / KG</span>
-                <span className="text-5xl font-serif italic text-forest-900">1.000 <span className="text-2xl text-emerald-600">₺</span></span>
+                <span className="text-5xl font-serif italic text-forest-900">{esekSutuPrice.toLocaleString("tr-TR")} <span className="text-2xl text-emerald-600">₺</span></span>
               </div>
               <button 
-                onClick={() => handleAddToCart("p2", "Eşek Sütü", 1000, "https://villaqrmenu.b-cdn.net/atasevenyaylasi/Gemini_Generated_Image_4sub9c4sub9c4sub.webp")}
+                onClick={() => handleAddToCart("p2", "Eşek Sütü", esekSutuPrice, "https://villaqrmenu.b-cdn.net/atasevenyaylasi/Gemini_Generated_Image_4sub9c4sub9c4sub.webp")}
                 className="w-full sm:w-auto px-12 py-5 border-2 border-forest-900 text-forest-900 rounded-full uppercase tracking-[0.2em] text-sm font-bold hover:bg-forest-900 hover:text-white transition-all shadow-xl hover:-translate-y-1 transform duration-300"
               >
                 Sepete Ekle

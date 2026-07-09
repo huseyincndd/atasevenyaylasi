@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
-import { getProductById } from "@/lib/products";
+import { getProductByIdFromDB } from "@/lib/products";
+import prisma from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
   try {
@@ -30,7 +31,7 @@ export async function POST(req: NextRequest) {
     const paytrBasket: any[] = [];
 
     for (const item of cart) {
-      const realProduct = getProductById(item.id);
+      const realProduct = await getProductByIdFromDB(item.id);
       if (!realProduct) {
         return NextResponse.json({ error: `Geçersiz ürün: ${item.id}` }, { status: 400 });
       }
@@ -72,6 +73,20 @@ export async function POST(req: NextRequest) {
       .createHmac("sha256", merchant_key)
       .update(hashString)
       .digest("base64");
+
+    // PayTR'a İstek Atmadan Önce Siparişi Veritabanına Kaydet (PENDING)
+    await prisma.order.create({
+      data: {
+        orderNumber: merchant_oid,
+        customerName: user_name,
+        customerEmail: user_email,
+        customerPhone: user_phone,
+        customerAddress: user_address,
+        totalAmount: calculatedTotal,
+        status: "PENDING",
+        items: cart, // Sepet detayını JSON olarak saklıyoruz
+      }
+    });
 
     const formData = new URLSearchParams();
     formData.append("merchant_id", merchant_id);
