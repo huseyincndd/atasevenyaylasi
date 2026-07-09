@@ -4,70 +4,61 @@ import React, { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { 
   CheckCircle, ShieldCheck, Lock, CreditCard, 
-  MapPin, ArrowLeft, Truck, Package
+  MapPin, ArrowLeft, Truck, Package, Mail
 } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function CheckoutPage() {
-  const { cartTotal, clearCart, cart } = useCart();
-  const [isSuccess, setIsSuccess] = useState(false);
+  const { cartTotal, cart } = useCart();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [step, setStep] = useState(1); // 1: Adres, 2: Ödeme iFrame
+  const [paytrToken, setPaytrToken] = useState<string | null>(null);
 
   // Form State
-  const [cardNumber, setCardNumber] = useState("");
-  const [cardExpiry, setCardExpiry] = useState("");
-  const [step, setStep] = useState(1); // 1: Adres, 2: Ödeme
+  const [formData, setFormData] = useState({
+    name: "",
+    surname: "",
+    email: "",
+    phone: "",
+    address: ""
+  });
 
-  const handlePayment = (e: React.FormEvent) => {
+  const handleProceedToPayment = async (e: React.FormEvent) => {
     e.preventDefault();
     if (cart.length === 0) return;
     
     setIsProcessing(true);
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const response = await fetch("/api/paytr", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          cart: cart,
+          user: {
+            name: `${formData.name} ${formData.surname}`,
+            email: formData.email,
+            phone: formData.phone,
+            address: formData.address,
+          }
+        })
+      });
+
+      const data = await response.json();
+      
+      if (data.token) {
+        setPaytrToken(data.token);
+        setStep(2);
+      } else {
+        alert("Ödeme sistemi başlatılamadı. Hata: " + (data.error || "Bilinmeyen hata"));
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Ödeme sistemiyle iletişim kurulamadı. Lütfen tekrar deneyin.");
+    } finally {
       setIsProcessing(false);
-      setIsSuccess(true);
-      clearCart();
-    }, 1500);
+    }
   };
-
-  if (isSuccess) {
-    return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 relative overflow-hidden">
-        {/* Background blobs */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-200/40 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-200/40 rounded-full blur-[100px] pointer-events-none translate-y-1/3 -translate-x-1/3"></div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className="bg-white p-10 md:p-16 rounded-[2.5rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] border border-slate-100 max-w-lg w-full text-center relative z-10"
-        >
-          <motion.div 
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: "spring", delay: 0.2, stiffness: 200, damping: 20 }}
-            className="w-24 h-24 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-8 relative"
-          >
-            <div className="absolute inset-0 rounded-full bg-emerald-100 animate-ping opacity-50"></div>
-            <CheckCircle size={48} strokeWidth={2} />
-          </motion.div>
-          <h2 className="text-3xl font-bold text-slate-800 mb-4 tracking-tight">Siparişiniz Alındı!</h2>
-          <p className="text-slate-500 mb-10 text-lg leading-relaxed">
-            Teşekkür ederiz. Doğal ürünleriniz özenle paketlenip en kısa sürede adresinize doğru yola çıkacak.
-          </p>
-          <Link
-            href="/"
-            className="inline-flex items-center justify-center w-full bg-slate-900 hover:bg-slate-800 text-white font-medium py-4 px-8 rounded-2xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
-          >
-            Alışverişe Dön
-          </Link>
-        </motion.div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-slate-50 pt-24 pb-20 px-4 sm:px-6 lg:px-8 font-sans relative overflow-hidden">
@@ -77,7 +68,6 @@ export default function CheckoutPage() {
         <div className="absolute -top-[20%] -left-[10%] w-[700px] h-[700px] rounded-full bg-emerald-200/40 blur-[100px] mix-blend-multiply"></div>
         <div className="absolute top-[20%] -right-[10%] w-[600px] h-[600px] rounded-full bg-teal-100/50 blur-[120px] mix-blend-multiply"></div>
         <div className="absolute -bottom-[20%] left-[20%] w-[800px] h-[600px] rounded-full bg-green-100/40 blur-[100px] mix-blend-multiply"></div>
-        {/* Subtle dot pattern */}
         <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(#cbd5e1 1px, transparent 1px)', backgroundSize: '32px 32px', opacity: 0.3 }}></div>
       </div>
 
@@ -107,12 +97,13 @@ export default function CheckoutPage() {
           {/* LEFT COLUMN - FORM */}
           <div className="flex-1 order-2 lg:order-1 relative">
             <div className="absolute -inset-1 bg-gradient-to-r from-emerald-100 to-teal-50 rounded-[2.5rem] blur-lg opacity-50"></div>
-            <form id="payment-form" onSubmit={handlePayment} className="relative bg-white/80 backdrop-blur-xl rounded-[2rem] p-6 sm:p-10 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)] border border-white">
+            <div className="relative bg-white/80 backdrop-blur-xl rounded-[2rem] p-6 sm:p-10 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)] border border-white min-h-[600px]">
               
               <AnimatePresence mode="wait">
                 {step === 1 && (
-                  <motion.div 
+                  <motion.form 
                     key="step1"
+                    onSubmit={handleProceedToPayment}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
@@ -133,6 +124,7 @@ export default function CheckoutPage() {
                         <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 ml-1">Adınız</label>
                         <input 
                           required type="text" placeholder="Örn: Ahmet"
+                          value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})}
                           className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-100 focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all text-slate-800 placeholder:text-slate-400 font-medium" 
                         />
                       </div>
@@ -140,13 +132,23 @@ export default function CheckoutPage() {
                         <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 ml-1">Soyadınız</label>
                         <input 
                           required type="text" placeholder="Örn: Yılmaz"
+                          value={formData.surname} onChange={e => setFormData({...formData, surname: e.target.value})}
                           className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-100 focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all text-slate-800 placeholder:text-slate-400 font-medium" 
                         />
                       </div>
-                      <div className="md:col-span-2 group">
+                      <div className="md:col-span-1 group">
+                        <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 ml-1">E-Posta Adresi</label>
+                        <input 
+                          required type="email" placeholder="ornek@mail.com"
+                          value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})}
+                          className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-100 focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all text-slate-800 placeholder:text-slate-400 font-medium" 
+                        />
+                      </div>
+                      <div className="md:col-span-1 group">
                         <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 ml-1">Telefon Numarası</label>
                         <input 
                           required type="tel" placeholder="0 (5XX) XXX XX XX"
+                          value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})}
                           className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-100 focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all text-slate-800 placeholder:text-slate-400 font-medium" 
                         />
                       </div>
@@ -154,6 +156,7 @@ export default function CheckoutPage() {
                         <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 ml-1">Açık Adres</label>
                         <textarea 
                           required rows={3} placeholder="Mahalle, sokak, no, ilçe/il..."
+                          value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})}
                           className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-100 focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all text-slate-800 resize-none placeholder:text-slate-400 font-medium"
                         ></textarea>
                       </div>
@@ -161,15 +164,21 @@ export default function CheckoutPage() {
 
                     <div className="flex justify-end">
                       <button 
-                        type="button" 
-                        onClick={() => setStep(2)}
-                        className="bg-slate-900 hover:bg-slate-800 text-white px-8 py-4 rounded-2xl font-medium transition-all hover:-translate-y-0.5 shadow-lg flex items-center gap-2"
+                        type="submit" 
+                        disabled={isProcessing}
+                        className="bg-slate-900 hover:bg-slate-800 disabled:bg-slate-400 text-white px-8 py-4 rounded-2xl font-medium transition-all shadow-lg flex items-center gap-2"
                       >
-                        Ödemeye Geç
-                        <ArrowLeft size={18} className="rotate-180" />
+                        {isProcessing ? (
+                           <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                        ) : (
+                          <>
+                            Ödemeye Geç
+                            <ArrowLeft size={18} className="rotate-180" />
+                          </>
+                        )}
                       </button>
                     </div>
-                  </motion.div>
+                  </motion.form>
                 )}
 
                 {step === 2 && (
@@ -179,110 +188,45 @@ export default function CheckoutPage() {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: 20 }}
                     transition={{ duration: 0.3 }}
+                    className="flex flex-col h-full"
                   >
-                     <div className="flex items-center gap-4 mb-8">
-                      <div className="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600">
-                        <CreditCard size={24} strokeWidth={1.5} />
-                      </div>
-                      <div>
-                        <h2 className="text-xl font-bold text-slate-800">Ödeme Bilgileri</h2>
-                        <p className="text-slate-500 text-sm mt-1">Kart bilgilerinizi güvenle girin</p>
-                      </div>
-                    </div>
-
-                    <div className="space-y-5 mb-8">
-                      <div>
-                        <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 ml-1">Kart Üzerindeki İsim</label>
-                        <input 
-                          required type="text" placeholder="AHMET YILMAZ"
-                          className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-100 focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all text-slate-800 uppercase placeholder:text-slate-400 font-medium" 
-                        />
-                      </div>
-                      
-                      <div>
-                        <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 ml-1">Kart Numarası</label>
-                        <div className="relative">
-                          <input 
-                            required type="text" maxLength={19}
-                            placeholder="0000 0000 0000 0000"
-                            onChange={(e) => {
-                              let val = e.target.value.replace(/\D/g, '');
-                              val = val.replace(/(.{4})/g, '$1 ').trim();
-                              setCardNumber(val);
-                            }}
-                            value={cardNumber}
-                            className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-100 focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all text-slate-800 font-mono text-lg placeholder:text-slate-400" 
-                          />
-                          <div className="absolute right-5 top-1/2 -translate-y-1/2 flex items-center gap-1 opacity-40">
-                             <div className="w-6 h-6 rounded-full bg-slate-400"></div>
-                             <div className="w-6 h-6 rounded-full bg-slate-400 -ml-3"></div>
+                     <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600">
+                            <Lock size={24} strokeWidth={1.5} />
+                          </div>
+                          <div>
+                            <h2 className="text-xl font-bold text-slate-800">Güvenli Ödeme</h2>
+                            <p className="text-slate-500 text-sm mt-1">256-bit SSL ile korunmaktadır</p>
                           </div>
                         </div>
-                      </div>
-                      
-                      <div className="grid grid-cols-2 gap-5">
-                        <div>
-                          <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 ml-1">Son Kullanma</label>
-                          <input 
-                            required type="text" maxLength={5} placeholder="AA/YY"
-                            onChange={(e) => {
-                              let val = e.target.value.replace(/\D/g, '');
-                              if (val.length >= 2) val = val.slice(0,2) + '/' + val.slice(2,4);
-                              setCardExpiry(val);
-                            }}
-                            value={cardExpiry}
-                            className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-100 focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all text-slate-800 font-mono text-lg text-center placeholder:text-slate-400" 
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 ml-1">CVC</label>
-                          <div className="relative">
-                            <input 
-                              required type="text" maxLength={3} placeholder="123"
-                              className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-100 focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all text-slate-800 font-mono text-lg text-center placeholder:text-slate-400" 
-                            />
-                            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 tooltip cursor-help" title="Kartınızın arkasındaki 3 haneli kod">
-                              ?
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                        <button 
+                          onClick={() => setStep(1)}
+                          className="text-sm font-medium text-slate-400 hover:text-slate-600 underline"
+                        >
+                          Geri Dön
+                        </button>
+                     </div>
 
-                    <div className="flex items-center gap-3 mb-8 text-xs font-medium text-slate-500 bg-slate-50 py-3 px-4 rounded-xl border border-slate-100">
-                      <ShieldCheck size={16} className="shrink-0 text-emerald-500" />
-                      <span>256-bit SSL şifreleme ile güvenli ödeme.</span>
-                    </div>
-
-                    <div className="flex flex-col-reverse sm:flex-row gap-4">
-                      <button 
-                        type="button" 
-                        onClick={() => setStep(1)}
-                        className="px-6 py-4 rounded-2xl font-medium text-slate-500 hover:bg-slate-50 transition-all flex items-center justify-center bg-white border border-slate-200 hover:text-slate-800"
-                      >
-                        Geri
-                      </button>
-                      
-                      <button
-                        type="submit"
-                        disabled={cart.length === 0 || isProcessing}
-                        className="flex-1 bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed text-white font-medium py-4 rounded-2xl transition-all shadow-lg shadow-emerald-500/30 flex items-center justify-center gap-2 text-lg active:scale-[0.98]"
-                      >
-                        {isProcessing ? (
-                          <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                        ) : (
-                          <>
-                            <Lock size={18} />
-                            Siparişi Tamamla
-                          </>
-                        )}
-                      </button>
+                    <div className="w-full flex-1 min-h-[550px] bg-white rounded-xl overflow-hidden border border-slate-100 relative">
+                      {paytrToken ? (
+                        <iframe
+                          src={`https://www.paytr.com/odeme/guvenli/${paytrToken}`}
+                          id="paytriframe"
+                          style={{ width: "100%", height: "100%", minHeight: "550px", border: "0" }}
+                          allowTransparency={true}
+                        ></iframe>
+                      ) : (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-400 gap-4">
+                          <div className="w-8 h-8 border-4 border-slate-200 border-t-emerald-500 rounded-full animate-spin"></div>
+                          <span>Güvenli ödeme altyapısı hazırlanıyor...</span>
+                        </div>
+                      )}
                     </div>
                   </motion.div>
                 )}
               </AnimatePresence>
-
-            </form>
+            </div>
           </div>
 
           {/* RIGHT COLUMN - ORDER SUMMARY */}

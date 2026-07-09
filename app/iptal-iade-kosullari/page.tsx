@@ -8,7 +8,7 @@ export default function IptalIade() {
         <h1 className="text-3xl md:text-5xl font-light text-forest-900 mb-8">İptal ve İade Koşulları</h1>
         <div className="bg-white p-8 md:p-12 rounded-[2rem] shadow-sm border border-forest-900/5 prose prose-emerald max-w-none text-forest-900/80">
           <h2>1. İptal Şartları</h2>
-          <p>Tüketici, vermiş olduğu siparişi ürün kargoya verilmeden önce iptal etme hakkına sahiptir. İptal taleplerinizi <strong>info@atasevenkimiz.com</strong> adresine veya müşteri hizmetleri numaramıza sipariş numaranız ile birlikte iletebilirsiniz. Siparişiniz kargoya verilmeden iptal edildiği takdirde ücret iadeniz 3-5 iş günü içerisinde ödeme yaptığınız kanalla tarafınıza sağlanır.</p>
+          <p>Tüketici, vermiş olduğu siparişi ürün kargoya verilmeden önce iptal etme hakkına sahiptir. İptal taleplerinizi <strong>atasevenkimizsut@gmail.com</strong> adresine veya müşteri hizmetleri numaramıza sipariş numaranız ile birlikte iletebilirsiniz. Siparişiniz kargoya verilmeden iptal edildiği takdirde ücret iadeniz 3-5 iş günü içerisinde ödeme yaptığınız kanalla tarafınıza sağlanır.</p>
           
           <h2>2. İade Şartları (Gıda ve Hızlı Tüketim Malları)</h2>
           <p>Tüketici Hakları gereği; <strong>çabuk bozulabilen, son kullanma tarihi geçme ihtimali olan gıda maddeleri (süt, kımız vb.), tek kullanımlık ürünler ve ambalajı açılmış ürünlerin iadesi mümkün değildir.</strong></p>

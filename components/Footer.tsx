@@ -74,13 +74,13 @@ export const Footer = () => {
                 </div>
               </a>
 
-              <a href="mailto:info@atasevenkimiz.com" className="flex items-start gap-4 group hover:text-emerald-400 transition-colors text-left">
+              <a href="mailto:atasevenkimizsut@gmail.com" className="flex items-start gap-4 group hover:text-emerald-400 transition-colors text-left">
                 <div className="w-12 h-12 rounded-full bg-forest-800 flex items-center justify-center shrink-0 group-hover:bg-emerald-900/50 transition-colors border border-forest-700">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-400"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
                 </div>
                 <div>
                   <span className="block text-xs text-beige-100/50 mb-1 uppercase tracking-widest">E-Posta</span>
-                  <span className="text-base font-light tracking-wide">info@atasevenkimiz.com</span>
+                  <span className="text-base font-light tracking-wide">atasevenkimizsut@gmail.com</span>
                 </div>
               </a>
 

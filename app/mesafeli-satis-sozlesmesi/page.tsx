@@ -12,7 +12,7 @@ export default function MesafeliSatis() {
           <p><strong>SATICI:</strong> Ataseven Kımız Yaylası<br/>
           <strong>Adres:</strong> 24556. Sk. 180/8, 42090 Meram / Konya<br/>
           <strong>Telefon:</strong> +90 (532) 561 03 67<br/>
-          <strong>E-Posta:</strong> info@atasevenkimiz.com</p>
+          <strong>E-Posta:</strong> atasevenkimizsut@gmail.com</p>
           
           <h2>2. Sözleşmenin Konusu</h2>
           <p>İşbu sözleşmenin konusu, ALICI'nın SATICI'ya ait internet sitesinden elektronik ortamda siparişini yaptığı, sözleşmede özellikleri ve satış fiyatı belirtilen ürünün satışı ve teslimi ile ilgili olarak Tüketicinin Korunması Hakkında Kanun ve Mesafeli Sözleşmelere Dair Yönetmelik hükümleri gereğince tarafların hak ve yükümlülüklerinin saptanmasıdır.</p>
