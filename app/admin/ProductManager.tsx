@@ -7,14 +7,14 @@ export const ProductManager = ({ initialProducts }: { initialProducts: any[] }) 
   const [products, setProducts] = useState(initialProducts);
   const [loadingId, setLoadingId] = useState<string | null>(null);
 
-  const handlePriceChange = (id: string, value: string) => {
+  const handlePriceChange = (id: string, field: "price" | "oldPrice", value: string) => {
     const newPrice = parseFloat(value) || 0;
-    setProducts(products.map(p => p.id === id ? { ...p, price: newPrice } : p));
+    setProducts(products.map(p => p.id === id ? { ...p, [field]: newPrice > 0 ? newPrice : null } : p));
   };
 
-  const handleSave = async (id: string, price: number) => {
+  const handleSave = async (id: string, price: number, oldPrice?: number | null) => {
     setLoadingId(id);
-    const res = await updateProductPrice(id, price);
+    const res = await updateProductPrice(id, price, oldPrice);
     if (!res.success) {
       alert("Fiyat kaydedilemedi!");
     }
@@ -37,18 +37,37 @@ export const ProductManager = ({ initialProducts }: { initialProducts: any[] }) 
             </div>
             
             <div className="flex items-center gap-3">
-              <div className="relative w-28">
-                <input
-                  type="number"
-                  value={product.price}
-                  onChange={(e) => handlePriceChange(product.id, e.target.value)}
-                  className="w-full bg-white border border-slate-200 text-slate-800 font-bold py-2 px-3 pr-8 rounded-lg text-right focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
-                />
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-sm">₺</div>
+              {/* Eski Fiyat (Üstü Çizili) */}
+              <div className="flex flex-col gap-1 items-center">
+                <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Eski Fiyat (İndirim)</span>
+                <div className="relative w-28">
+                  <input
+                    type="number"
+                    value={product.oldPrice || ""}
+                    onChange={(e) => handlePriceChange(product.id, "oldPrice", e.target.value)}
+                    placeholder="Yok"
+                    className="w-full bg-white border border-slate-200 text-slate-500 font-medium py-2 px-3 pr-8 rounded-lg text-right focus:outline-none focus:border-red-400 focus:ring-1 focus:ring-red-400"
+                  />
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-sm">₺</div>
+                </div>
+              </div>
+
+              {/* Yeni/Satış Fiyatı */}
+              <div className="flex flex-col gap-1 items-center">
+                <span className="text-[10px] text-emerald-600 font-bold uppercase tracking-wider">Satış Fiyatı</span>
+                <div className="relative w-28">
+                  <input
+                    type="number"
+                    value={product.price}
+                    onChange={(e) => handlePriceChange(product.id, "price", e.target.value)}
+                    className="w-full bg-white border border-emerald-200 text-slate-800 font-bold py-2 px-3 pr-8 rounded-lg text-right focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                  />
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-sm">₺</div>
+                </div>
               </div>
               
               <button
-                onClick={() => handleSave(product.id, product.price)}
+                onClick={() => handleSave(product.id, product.price, product.oldPrice)}
                 disabled={loadingId === product.id}
                 className="w-10 h-10 bg-emerald-100 text-emerald-600 hover:bg-emerald-600 hover:text-white rounded-lg flex items-center justify-center transition-colors disabled:opacity-50"
                 title="Kaydet"

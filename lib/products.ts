@@ -4,6 +4,7 @@ export interface Product {
   id: string;
   name: string;
   price: number;
+  oldPrice?: number | null;
 }
 
 // Artık veriler statik array'den değil, veritabanından çekiliyor.
@@ -13,11 +14,11 @@ export const getProductsFromDB = async (): Promise<Product[]> => {
       where: { isActive: true },
       orderBy: { createdAt: 'asc' }
     });
-    
     return dbProducts.map(p => ({
       id: p.productId,
       name: p.name,
-      price: p.price
+      price: p.price,
+      oldPrice: p.oldPrice
     }));
   } catch (error) {
     console.error("Database fetch error:", error);
@@ -32,11 +33,11 @@ export const getProductByIdFromDB = async (id: string): Promise<Product | undefi
     });
     
     if (!dbProduct) return undefined;
-    
     return {
       id: dbProduct.productId,
       name: dbProduct.name,
-      price: dbProduct.price
+      price: dbProduct.price,
+      oldPrice: dbProduct.oldPrice
     };
   } catch (error) {
     console.error(`Database fetch error for product ${id}:`, error);

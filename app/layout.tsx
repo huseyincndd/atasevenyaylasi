@@ -10,8 +10,24 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Ataseven Yaylası | Premium At Sütü, Eşek Sütü ve Kımız",
-  description: "Doğadan gelen gerçek sağlık. Ataseven Yaylası'nın el değmemiş doğasından sofralarınıza uzanan %100 doğal at sütü, eşek sütü ve geleneksel kımız.",
+  title: "Ataseven Yaylası | %100 Doğal At Sütü, Eşek Sütü ve Kımız Siparişi",
+  description: "Doğadan sofralarınıza uzanan gerçek şifa. Ataseven Yaylası güvencesiyle %100 saf at sütü, eşek sütü ve geleneksel kımız satın al. Türkiye'nin her yerine kargo imkanı.",
+  keywords: ["at sütü satın al", "eşek sütü satın al", "kımız satın al", "kımız sipariş", "at sütü faydaları", "doğal eşek sütü", "taze kımız"],
+  openGraph: {
+    title: "Ataseven Yaylası | %100 Doğal At Sütü, Eşek Sütü ve Kımız",
+    description: "Ataseven Yaylası güvencesiyle %100 saf at sütü, eşek sütü ve geleneksel kımız satın alın.",
+    url: "https://atasevenyaylasi.net",
+    siteName: "Ataseven Yaylası",
+    locale: "tr_TR",
+    type: "website",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  alternates: {
+    canonical: "https://atasevenyaylasi.net",
+  }
 };
 
 import { Navbar } from "../components/Navbar";

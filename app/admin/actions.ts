@@ -33,12 +33,10 @@ export async function updateOrderStatus(orderId: string, newStatus: string) {
   }
 }
 
-export async function updateProductPrice(productId: string, newPrice: number) {
+export async function updateProductPrice(productId: string, newPrice: number, oldPrice?: number | null) {
   try {
-    await prisma.product.update({
-      where: { id: productId },
-      data: { price: newPrice }
-    });
+    const finalOldPrice = oldPrice && oldPrice > 0 ? oldPrice : null;
+    await prisma.$executeRaw`UPDATE "Product" SET "price" = ${newPrice}, "oldPrice" = ${finalOldPrice} WHERE "id" = ${productId}`;
     // Anasayfadaki fiyatların güncellenmesi için anasayfayı revalidate ediyoruz
     revalidatePath("/");
     revalidatePath("/admin");

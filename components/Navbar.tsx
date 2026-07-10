@@ -93,6 +93,13 @@ export const Navbar = () => {
             Hikayemiz
           </Link>
           <Link
+            href="/blog"
+            onClick={() => setMobileMenuOpen(false)}
+            className="text-xs uppercase tracking-[0.2em] font-medium transition-colors text-emerald-600 hover:text-emerald-700 font-bold"
+          >
+            Blog
+          </Link>
+          <Link
             href="/kargo-takip"
             onClick={() => setMobileMenuOpen(false)}
             className="text-xs uppercase tracking-[0.2em] font-bold transition-colors text-emerald-600 hover:text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full"
@@ -148,6 +155,7 @@ export const Navbar = () => {
                 { name: 'At Sütü', href: '/#atsutu', id: '#atsutu' },
                 { name: 'Eşek Sütü', href: '/#esseksutu', id: '#esseksutu' },
                 { name: 'Kımız', href: '/#kimiz', id: '#kimiz' },
+                { name: 'Blog', href: '/blog', id: '' },
                 { name: 'Hikayemiz', href: '/#about', id: '#about' },
               ].map((item, i) => (
                 <motion.div

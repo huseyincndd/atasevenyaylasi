@@ -7,21 +7,24 @@ import { Snowflake, Truck, ChevronRight } from "lucide-react";
 export const KimizSection = ({ products = [] }: { products?: any[] }) => {
   const { addToCart } = useCart();
   
-  const getKimizPrice = (id: string, defaultPrice: number) => {
+  const getKimizDetails = (id: string, defaultPrice: number) => {
     const p = products.find((p) => p.id === id);
-    return p ? p.price : defaultPrice;
+    return {
+      price: p ? p.price : defaultPrice,
+      oldPrice: p ? p.oldPrice : null
+    };
   };
 
   const kimizPackages = [
-    { id: "k1", count: 1, price: getKimizPrice("k1", 500), label: "200 ML Cam Şişe" },
-    { id: "k2", count: 2, price: getKimizPrice("k2", 750), label: "2x 200 ML Cam Şişe" },
-    { id: "k3", count: 3, price: getKimizPrice("k3", 1000), label: "3x 200 ML Cam Şişe" },
-    { id: "k4", count: 4, price: getKimizPrice("k4", 1250), label: "4x 200 ML Cam Şişe" },
-    { id: "k5", count: 5, price: getKimizPrice("k5", 1500), label: "5x 200 ML Cam Şişe" },
-    { id: "k6", count: 6, price: getKimizPrice("k6", 1750), label: "6x 200 ML Cam Şişe" },
-    { id: "k12", count: 12, price: getKimizPrice("k12", 3000), label: "12x 200 ML Cam Şişe" },
-    { id: "k18", count: 18, price: getKimizPrice("k18", 4000), label: "18x 200 ML Cam Şişe" },
-    { id: "k24", count: 24, price: getKimizPrice("k24", 5500), label: "24x 200 ML Cam Şişe" },
+    { id: "k1", count: 1, ...getKimizDetails("k1", 500), label: "200 ML Cam Şişe" },
+    { id: "k2", count: 2, ...getKimizDetails("k2", 750), label: "2x 200 ML Cam Şişe" },
+    { id: "k3", count: 3, ...getKimizDetails("k3", 1000), label: "3x 200 ML Cam Şişe" },
+    { id: "k4", count: 4, ...getKimizDetails("k4", 1250), label: "4x 200 ML Cam Şişe" },
+    { id: "k5", count: 5, ...getKimizDetails("k5", 1500), label: "5x 200 ML Cam Şişe" },
+    { id: "k6", count: 6, ...getKimizDetails("k6", 1750), label: "6x 200 ML Cam Şişe" },
+    { id: "k12", count: 12, ...getKimizDetails("k12", 3000), label: "12x 200 ML Cam Şişe" },
+    { id: "k18", count: 18, ...getKimizDetails("k18", 4000), label: "18x 200 ML Cam Şişe" },
+    { id: "k24", count: 24, ...getKimizDetails("k24", 5500), label: "24x 200 ML Cam Şişe" },
   ];
 
   const [selectedPkg, setSelectedPkg] = useState(kimizPackages[0]);
@@ -37,12 +40,18 @@ export const KimizSection = ({ products = [] }: { products?: any[] }) => {
         
         {/* Header */}
         <div className="text-center mb-16 lg:mb-24">
+          <div className="mb-6">
+            <span className="inline-block bg-red-100 text-red-700 font-bold tracking-[0.2em] uppercase text-xs md:text-sm px-6 py-2 rounded-full border border-red-200 animate-pulse">
+              Çok kısa süreliğine herkes tatsın diye özel kampanya!
+            </span>
+          </div>
           <h4 className="text-emerald-700 font-bold tracking-[0.3em] uppercase text-xs md:text-sm mb-6 bg-emerald-50 border border-emerald-100 inline-block px-5 py-2 rounded-full">
             ATASEVEN — KIMIZ YAYLASI
           </h4>
-          <h2 className="text-5xl md:text-7xl lg:text-8xl font-light tracking-tight mb-8 text-forest-900">
+          <h2 className="text-5xl md:text-7xl lg:text-8xl font-light tracking-tight mb-2 text-forest-900">
             Geleneksel <span className="font-serif italic text-emerald-600">Kımız</span>
           </h2>
+          <p className="text-sm md:text-base text-emerald-600 font-medium mb-8 uppercase tracking-wider">Doğal Kımız Satın Al & Sipariş Ver</p>
           <div className="flex flex-wrap items-center justify-center gap-4 text-xs md:text-sm tracking-widest uppercase text-forest-900/40 font-medium">
             <span>DOĞAL</span>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/50"></span>
@@ -114,10 +123,16 @@ export const KimizSection = ({ products = [] }: { products?: any[] }) => {
                       </span>
                     </div>
                   </div>
-                  
-                  <span className={`text-2xl md:text-3xl font-serif italic ${selectedPkg.id === pkg.id ? "text-emerald-600 font-bold" : "text-forest-900/60"}`}>
-                    {pkg.price.toLocaleString("tr-TR")} <span className="text-lg">₺</span>
-                  </span>
+                  <div className="flex flex-col items-end">
+                    {pkg.oldPrice && pkg.oldPrice > pkg.price && (
+                      <span className="text-sm md:text-base line-through text-red-400 font-medium opacity-80 -mb-1">
+                        {pkg.oldPrice.toLocaleString("tr-TR")} ₺
+                      </span>
+                    )}
+                    <span className={`text-2xl md:text-3xl font-serif italic ${selectedPkg.id === pkg.id ? "text-emerald-600 font-bold" : "text-forest-900/80 font-bold"}`}>
+                      {pkg.price.toLocaleString("tr-TR")} <span className="text-lg">₺</span>
+                    </span>
+                  </div>
                 </button>
               ))}
             </div>
@@ -139,10 +154,17 @@ export const KimizSection = ({ products = [] }: { products?: any[] }) => {
                 <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-4">
                   <span className="uppercase tracking-[0.2em] text-[10px] sm:text-sm font-bold text-white/70 sm:text-white">Sepete Ekle</span>
                   <span className="w-1.5 h-1.5 rounded-full bg-white/30 hidden sm:block"></span>
-                  <div className="flex items-center gap-2 sm:gap-4">
-                    <span className="text-base sm:text-sm font-semibold">{selectedPkg.count} Adet</span>
-                    <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-white/50"></span>
-                    <span className="text-2xl sm:text-xl font-serif italic font-bold">{selectedPkg.price.toLocaleString("tr-TR")} ₺</span>
+                  <div className="flex flex-col items-end sm:items-center sm:flex-row gap-1 sm:gap-4">
+                    {selectedPkg.oldPrice && selectedPkg.oldPrice > selectedPkg.price && (
+                      <span className="text-xs sm:text-sm line-through text-red-200 opacity-90 hidden sm:block">
+                        {selectedPkg.oldPrice.toLocaleString("tr-TR")} ₺
+                      </span>
+                    )}
+                    <div className="flex items-center gap-2 sm:gap-4">
+                      <span className="text-base sm:text-sm font-semibold">{selectedPkg.count} Adet</span>
+                      <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-white/50"></span>
+                      <span className="text-2xl sm:text-xl font-serif italic font-bold">{selectedPkg.price.toLocaleString("tr-TR")} ₺</span>
+                    </div>
                   </div>
                 </div>
               </button>

@@ -35,14 +35,14 @@ export const Hero = () => {
             %100 Doğal ve Saf
           </span>
           
-          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold text-white leading-tight tracking-tight mb-6 drop-shadow-xl">
-            Doğadan Gelen <br />
-            <span className="text-emerald-400">Gerçek Sağlık</span>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight tracking-tight mb-6 drop-shadow-xl">
+            %100 Doğal At Sütü, <br className="hidden sm:block" />
+            <span className="text-emerald-400">Eşek Sütü ve Kımız</span>
           </h1>
           
           <p className="text-lg sm:text-xl md:text-2xl text-white/90 mb-10 font-medium max-w-2xl mx-auto drop-shadow-md">
             Ataseven Yaylası'nın el değmemiş doğasından sofralarınıza uzanan,
-            özenle üretilmiş taze süt ürünleri.
+            gerçek şifa kaynağı süt ürünlerini güvenle sipariş edin.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">

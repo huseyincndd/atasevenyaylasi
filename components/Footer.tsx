@@ -110,6 +110,7 @@ export const Footer = () => {
           <div className="lg:col-span-4 flex flex-col items-center md:items-start lg:ml-auto text-center md:text-left">
             <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-emerald-500 mb-8">Kurumsal & Yasal</h4>
             <ul className="flex flex-col gap-4 font-light text-beige-100/70">
+              <li><a href="/blog" className="hover:text-emerald-400 transition-colors font-medium text-emerald-400">Blog / Faydalı Bilgiler</a></li>
               <li><a href="/mesafeli-satis-sozlesmesi" className="hover:text-emerald-400 transition-colors">Mesafeli Satış Sözleşmesi</a></li>
               <li><a href="/iptal-iade-kosullari" className="hover:text-emerald-400 transition-colors">İptal ve İade Koşulları</a></li>
               <li><a href="/gizlilik-politikasi" className="hover:text-emerald-400 transition-colors">Gizlilik ve Güvenlik</a></li>

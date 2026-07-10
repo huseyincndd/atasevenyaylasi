@@ -11,8 +11,15 @@ export const ProductList = ({ products = [] }: { products?: any[] }) => {
     return p ? p.price : defaultPrice;
   };
 
+  const getOldPrice = (id: string) => {
+    const p = products.find(p => p.id === id);
+    return p ? p.oldPrice : null;
+  };
+
   const atSutuPrice = getPrice("p1", 1500);
+  const atSutuOldPrice = getOldPrice("p1");
   const esekSutuPrice = getPrice("p2", 1000);
+  const esekSutuOldPrice = getOldPrice("p2");
 
   const handleAddToCart = (id: string, name: string, price: number, image: string) => {
     addToCart({ id, name, price, image, quantity: 1 });
@@ -42,7 +49,8 @@ export const ProductList = ({ products = [] }: { products?: any[] }) => {
             <div className="mb-4">
               <span className="text-emerald-600 font-bold tracking-[0.2em] uppercase text-xs md:text-sm">%100 Doğal</span>
             </div>
-            <h3 className="text-5xl md:text-7xl font-light text-forest-900 mb-8 tracking-tight">At Sütü</h3>
+            <h2 className="text-5xl md:text-7xl font-light text-forest-900 mb-2 tracking-tight">At Sütü</h2>
+            <p className="text-sm md:text-base text-emerald-600 font-medium mb-6 uppercase tracking-wider">Doğal At Sütü Satın Al & Sipariş Ver</p>
             <p className="text-lg md:text-xl text-forest-900/70 font-light leading-relaxed mb-12">
               İçerdiği vitamin, mineral ve aminoasitler ile bağışıklık sistemini desteklemeye yardımcı olur. Doğal ve katkısız yapısıyla sağlıklı yaşamın vazgeçilmez bir parçasıdır.
             </p>
@@ -87,8 +95,13 @@ export const ProductList = ({ products = [] }: { products?: any[] }) => {
             </div>
 
             <div className="flex flex-col sm:flex-row items-center justify-between pt-10 border-t border-forest-900/5 gap-6">
-              <div className="text-center sm:text-left">
+              <div className="text-center sm:text-left flex flex-col items-center sm:items-start">
                 <span className="block text-xs font-semibold text-forest-900/40 uppercase tracking-widest mb-1">Fiyat / KG</span>
+                {atSutuOldPrice && atSutuOldPrice > atSutuPrice && (
+                  <span className="text-lg line-through text-red-400 font-medium opacity-80 -mb-2">
+                    {atSutuOldPrice.toLocaleString("tr-TR")} ₺
+                  </span>
+                )}
                 <span className="text-5xl font-serif italic text-forest-900">{atSutuPrice.toLocaleString("tr-TR")} <span className="text-2xl text-emerald-600">₺</span></span>
               </div>
               <button 
@@ -122,7 +135,8 @@ export const ProductList = ({ products = [] }: { products?: any[] }) => {
             <div className="mb-4">
               <span className="text-emerald-600 font-bold tracking-[0.2em] uppercase text-xs md:text-sm">%100 Doğal</span>
             </div>
-            <h3 className="text-5xl md:text-7xl font-light text-forest-900 mb-8 tracking-tight">Eşek Sütü</h3>
+            <h2 className="text-5xl md:text-7xl font-light text-forest-900 mb-2 tracking-tight">Eşek Sütü</h2>
+            <p className="text-sm md:text-base text-emerald-600 font-medium mb-6 uppercase tracking-wider">Taze Eşek Sütü Satın Al & Fiyatları</p>
             <p className="text-lg md:text-xl text-forest-900/70 font-light leading-relaxed mb-12">
               İçerdiği vitamin, mineral ve aminoasitler ile bağışıklık sistemini desteklemeye yardımcı olur. Doğal ve katkısız yapısıyla sağlıklı yaşamın vazgeçilmez bir parçasıdır.
             </p>
@@ -167,8 +181,13 @@ export const ProductList = ({ products = [] }: { products?: any[] }) => {
             </div>
 
             <div className="flex flex-col sm:flex-row items-center justify-between pt-10 border-t border-forest-900/5 gap-6">
-              <div className="text-center sm:text-left">
+              <div className="text-center sm:text-left flex flex-col items-center sm:items-start">
                 <span className="block text-xs font-semibold text-forest-900/40 uppercase tracking-widest mb-1">Fiyat / KG</span>
+                {esekSutuOldPrice && esekSutuOldPrice > esekSutuPrice && (
+                  <span className="text-lg line-through text-red-400 font-medium opacity-80 -mb-2">
+                    {esekSutuOldPrice.toLocaleString("tr-TR")} ₺
+                  </span>
+                )}
                 <span className="text-5xl font-serif italic text-forest-900">{esekSutuPrice.toLocaleString("tr-TR")} <span className="text-2xl text-emerald-600">₺</span></span>
               </div>
               <button 

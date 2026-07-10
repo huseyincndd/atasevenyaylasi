@@ -275,7 +275,7 @@ export default function CheckoutPage() {
                   <span className="flex items-center gap-1.5">
                     <Truck size={14} /> Kargo
                   </span>
-                  <span className="text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-md">ÜCRETSİZ</span>
+                  <span className="text-red-600 font-semibold bg-red-50 px-2 py-0.5 rounded-md">ALICI ÖDER</span>
                 </div>
                 <div className="flex justify-between items-end pt-2">
                   <span className="text-base font-semibold text-slate-800">Toplam</span>
