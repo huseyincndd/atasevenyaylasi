@@ -4,6 +4,7 @@ import { getBlogPostBySlug, blogPosts } from "@/lib/blog";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import Script from "next/script";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -44,8 +45,35 @@ export default async function BlogPostPage({ params }: Props) {
     notFound();
   }
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": post.title,
+    "description": post.excerpt,
+    "image": post.image,
+    "datePublished": post.date,
+    "author": {
+      "@type": "Organization",
+      "name": post.author,
+      "url": "https://atasevenyaylasi.net"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Ataseven Yaylası",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://atasevenyaylasi.net/icon.png"
+      }
+    }
+  };
+
   return (
     <article className="min-h-screen bg-[#FAF9F6] pt-32 pb-24">
+      <Script
+        id={`article-schema-${post.slug}`}
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="max-w-4xl mx-auto px-4 md:px-12">
         <Link href="/blog" className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-semibold mb-8 transition-colors">
           <ArrowLeft size={20} /> Blog'a Dön
