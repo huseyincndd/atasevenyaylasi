@@ -44,14 +44,14 @@ export const Navbar = () => {
   return (
     <>
       <nav
-        className="fixed top-4 left-4 right-4 lg:left-1/2 lg:-translate-x-1/2 lg:w-full lg:max-w-6xl z-50 transition-all duration-500 rounded-full px-4 md:px-6 py-0 flex items-center justify-between bg-white/95 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-200/50"
+        className="fixed top-4 left-4 right-4 lg:left-1/2 lg:-translate-x-1/2 lg:w-full lg:max-w-6xl z-50 transition-all duration-500 rounded-full pr-4 md:pr-6 pl-0 py-0 flex items-center justify-between bg-white/95 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-200/50 overflow-hidden"
       >
         {/* Logo */}
         <Link href="/" className="flex items-center group z-50" onClick={(e) => handleNavClick(e, '')}>
           <img 
-            src="https://villaqrmenu.b-cdn.net/atasevenlogo.png" 
+            src="https://villaqrmenu.b-cdn.net/atasevenyaylasi/Atasevenkimiz-logo.png" 
             alt="Ataseven Yaylası Logo" 
-            className="w-16 h-16 md:w-20 md:h-20 object-contain transition-transform group-hover:scale-105 scale-[1.15]"
+            className="w-16 h-16 md:w-20 md:h-20 object-contain transition-transform group-hover:scale-105"
           />
         </Link>
 
