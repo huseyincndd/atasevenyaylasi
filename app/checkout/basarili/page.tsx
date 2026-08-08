@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Script from "next/script";
 import { CheckCircle, Copy, PackageSearch } from "lucide-react";
 import { CopyButton } from "@/app/checkout/basarili/CopyButton"; // We will create this client component
 
@@ -8,7 +9,31 @@ export default async function SuccessPage({ searchParams }: { searchParams: Prom
   const orderNumber = typeof order === 'string' ? order : null;
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 relative overflow-hidden">
+    <>
+      <Script id="meta-pixel-purchase" strategy="afterInteractive">
+        {`
+          !function(f,b,e,v,n,t,s)
+          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+          n.queue=[];t=b.createElement(e);t.async=!0;
+          t.src=v;s=b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t,s)}(window, document,'script',
+          'https://connect.facebook.net/en_US/fbevents.js');
+          fbq('init', '2952443221766719');
+          fbq('track', 'purchase');
+        `}
+      </Script>
+      <noscript>
+        <img
+          height="1"
+          width="1"
+          style={{ display: "none" }}
+          src="https://www.facebook.com/tr?id=2952443221766719&ev=purchase&noscript=1"
+          alt=""
+        />
+      </noscript>
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 relative overflow-hidden">
       {/* Background blobs */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-200/40 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-200/40 rounded-full blur-[100px] pointer-events-none translate-y-1/3 -translate-x-1/3"></div>
@@ -53,5 +78,6 @@ export default async function SuccessPage({ searchParams }: { searchParams: Prom
         </Link>
       </div>
     </div>
+    </>
   );
 }
