@@ -96,7 +96,7 @@ export const ProductList = ({ products = [] }: { products?: any[] }) => {
 
             <div className="flex flex-col sm:flex-row items-center justify-between pt-10 border-t border-forest-900/5 gap-6">
               <div className="text-center sm:text-left flex flex-col items-center sm:items-start">
-                <span className="block text-xs font-semibold text-forest-900/40 uppercase tracking-widest mb-1">Fiyat / KG</span>
+                <span className="block text-xs font-semibold text-forest-900/40 uppercase tracking-widest mb-1">Fiyat / 3 KG</span>
                 {atSutuOldPrice && atSutuOldPrice > atSutuPrice && (
                   <span className="text-lg line-through text-red-400 font-medium opacity-80 -mb-2">
                     {atSutuOldPrice.toLocaleString("tr-TR")} ₺
