@@ -16,15 +16,11 @@ export const KimizSection = ({ products = [] }: { products?: any[] }) => {
   };
 
   const kimizPackages = [
-    { id: "k1", count: 1, ...getKimizDetails("k1", 500), label: "200 ML Cam Şişe" },
-    { id: "k2", count: 2, ...getKimizDetails("k2", 750), label: "2x 200 ML Cam Şişe" },
-    { id: "k3", count: 3, ...getKimizDetails("k3", 1000), label: "3x 200 ML Cam Şişe" },
-    { id: "k4", count: 4, ...getKimizDetails("k4", 1250), label: "4x 200 ML Cam Şişe" },
-    { id: "k5", count: 5, ...getKimizDetails("k5", 1500), label: "5x 200 ML Cam Şişe" },
     { id: "k6", count: 6, ...getKimizDetails("k6", 1750), label: "6x 200 ML Cam Şişe" },
     { id: "k12", count: 12, ...getKimizDetails("k12", 3000), label: "12x 200 ML Cam Şişe" },
     { id: "k18", count: 18, ...getKimizDetails("k18", 4000), label: "18x 200 ML Cam Şişe" },
     { id: "k24", count: 24, ...getKimizDetails("k24", 5500), label: "24x 200 ML Cam Şişe" },
+    { id: "k30", count: 30, ...getKimizDetails("k30", 6500), label: "30x 200 ML Cam Şişe" },
   ];
 
   const [selectedPkg, setSelectedPkg] = useState(kimizPackages[0]);
