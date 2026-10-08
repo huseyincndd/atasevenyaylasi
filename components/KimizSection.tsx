@@ -63,7 +63,7 @@ export const KimizSection = ({ products = [] }: { products?: any[] }) => {
           <div className="w-full lg:w-1/2 lg:sticky lg:top-32 z-10">
             <div className="w-full relative h-[500px] md:h-[600px] lg:h-[750px] rounded-[3rem] lg:rounded-[4rem] overflow-hidden shadow-2xl mb-8 group border border-forest-900/5">
               <img 
-                src="https://cdn.dsmcdn.com/mnresize/620/920/ty1892/prod/QC_ENRICHMENT/20260625/17/567b1557-32d8-3ef2-b92b-35a260d5cb6d/1_org_zoom.jpg" 
+                src="/images/kimizana.jpeg" 
                 alt="Geleneksel Kımız" 
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000 ease-out"
               />
